@@ -1,0 +1,2214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>zeroprofit.store — Wholesale Prices. Zero Markup. Full Receipt.</title>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            paper: '#FAFAFA',
+            ink: '#0F172A',
+            emeraldTrust: '#059669',
+            ledgerBorder: '#CBD5E1',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body {
+      background-color: #FAFAFA;
+      color: #0F172A;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+    .ledger-shadow {
+      box-shadow: 4px 4px 0px #0F172A;
+    }
+    .ledger-shadow-sm {
+      box-shadow: 2px 2px 0px #0F172A;
+    }
+    .ledger-shadow-emerald {
+      box-shadow: 4px 4px 0px #059669;
+    }
+    .bg-ledger-grid {
+      background-size: 28px 28px;
+      background-image: 
+        linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAFAFA;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #0F172A;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="bg-paper bg-ledger-grid text-ink min-h-screen flex flex-col">
+
+  <!-- TOP TRANSPARENCY TICKER BAR -->
+  <div class="bg-ink text-paper text-xs py-2 px-4 border-b border-ink">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 font-mono-num">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-semibold tracking-wider text-emerald-400">OPEN-LEDGER PROTOCOL • 0.00% PRODUCT MARKUP</span>
+        <span class="hidden md:inline text-slate-500">|</span>
+        <span class="hidden md:inline text-slate-300">ZERO WAREHOUSES • DIRECT MANDI & BULK SUPPLIER RAILS</span>
+      </div>
+      <div class="font-mono-num text-[11px] text-slate-300 flex items-center gap-3">
+        <span>PLATFORM FEE: <strong class="text-emerald-400">₹0.00</strong></span>
+        <span>•</span>
+        <span>SUSTAINED BY: <strong class="text-white">SEED INVESTORS & DONORS</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN STICKY HEADER & NAVIGATION -->
+  <header class="sticky top-0 z-30 bg-paper/95 backdrop-blur border-b border-ink">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 md:h-20 gap-4">
+        <!-- Brand Logo -->
+        <button onclick="switchTab('storefront')" class="flex items-center gap-3 text-left group focus:outline-none">
+          <div class="w-10 h-10 bg-ink text-paper rounded-lg flex items-center justify-center font-mono-num font-bold text-lg border border-ink group-hover:bg-emeraldTrust transition-colors">
+            0%
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-extrabold text-lg sm:text-xl tracking-tight">zeroprofit.store</span>
+              <span class="hidden sm:inline-block text-[10px] font-mono-num font-bold uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-emeraldTrust border border-emeraldTrust">
+                PRE-SEED
+              </span>
+            </div>
+            <p class="text-[11px] font-mono-num text-slate-600 hidden sm:block">WHOLESALE DIRECT • BENGALURU #01</p>
+          </div>
+        </button>
+
+        <!-- Desktop Navigation Tabs -->
+        <nav class="hidden md:flex items-center gap-1.5 bg-white p-1.5 rounded-xl border border-ink">
+          <button id="nav-storefront" onclick="switchTab('storefront')" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-ink text-paper">
+            Storefront (0% Margin)
+          </button>
+          <button id="nav-checkout" onclick="switchTab('checkout')" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-ink transition-all">
+            Split-Ledger Checkout
+          </button>
+          <button id="nav-about" onclick="switchTab('about')" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-ink transition-all flex items-center gap-1.5">
+            <span>About, Ledger & Seed / Donate</span>
+            <span class="w-2 h-2 rounded-full bg-emeraldTrust"></span>
+          </button>
+        </nav>
+
+        <!-- Cart Drawer Trigger -->
+        <button onclick="toggleCartDrawer(true)" class="flex items-center gap-3 bg-white hover:bg-slate-100 text-ink px-4 py-2.5 rounded-xl border border-ink ledger-shadow-sm active:translate-y-0.5 transition-all">
+          <div class="relative">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+            <span id="header-cart-badge" class="absolute -top-2 -right-2 bg-emeraldTrust text-white font-mono-num text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              0
+            </span>
+          </div>
+          <div class="text-left">
+            <div class="text-[10px] font-mono-num uppercase text-slate-500 leading-none">Open Receipt</div>
+            <div id="header-cart-total" class="font-mono-num font-bold text-sm leading-tight">₹0.00</div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Mobile Navigation Bar -->
+      <div class="flex md:hidden items-center gap-1.5 pb-3 overflow-x-auto">
+        <button id="m-nav-storefront" onclick="switchTab('storefront')" class="m-nav-btn flex-1 whitespace-nowrap px-3 py-2 rounded-lg text-xs font-bold bg-ink text-paper text-center">
+          Storefront (0%)
+        </button>
+        <button id="m-nav-checkout" onclick="switchTab('checkout')" class="m-nav-btn flex-1 whitespace-nowrap px-3 py-2 rounded-lg text-xs font-bold bg-white border border-ink text-ink text-center">
+          Split Checkout
+        </button>
+        <button id="m-nav-about" onclick="switchTab('about')" class="m-nav-btn flex-1 whitespace-nowrap px-3 py-2 rounded-lg text-xs font-bold bg-white border border-ink text-ink text-center">
+          About • Invest / Donate
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ========================================================= -->
+    <!-- VIEW 1: STOREFRONT (ZERO-WAREHOUSE DIRECT)                -->
+    <!-- ========================================================= -->
+    <section id="view-storefront" class="space-y-8">
+      
+      <!-- Hero Open-Ledger Banner -->
+      <div class="bg-white border border-ink rounded-2xl p-6 sm:p-8 lg:p-10 ledger-shadow relative overflow-hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7 space-y-5">
+            <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emeraldTrust text-emeraldTrust font-mono-num text-xs font-bold">
+              <span>ZERO DARK STORES</span>
+              <span>•</span>
+              <span>DIRECT MANDI & WHOLESALER RAILS</span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.1]">
+              Wholesale Prices.<br />
+              <span class="text-emeraldTrust underline decoration-2 underline-offset-4">Zero Markup.</span> Full Receipt.
+            </h1>
+            <p class="text-slate-700 text-base sm:text-lg max-w-2xl leading-relaxed">
+              We hold zero inventory and charge <strong>₹0.00 platform fees</strong>. Every item is sourced live from verified Bengaluru wholesalers (Yeshwanthpur APMC, KR Market & direct mills) and dispatched directly to your door via integrated delivery partners at actual pass-through rates.
+            </p>
+            <div class="flex flex-wrap items-center gap-3 pt-1">
+              <button onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})" class="px-5 py-3 rounded-xl bg-ink text-paper font-semibold text-sm hover:bg-slate-800 transition-colors">
+                Shop Wholesale Catalog ↓
+              </button>
+              <button onclick="switchTab('about')" class="px-5 py-3 rounded-xl bg-emerald-50 border border-emeraldTrust text-emeraldTrust font-bold text-sm hover:bg-emerald-100 transition-colors">
+                How We Run: Invest or Donate →
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Side: Live Sample Receipt Breakdown Card -->
+          <div class="lg:col-span-5">
+            <div class="bg-paper border border-ink rounded-xl p-5 font-mono-num text-xs space-y-3">
+              <div class="flex items-center justify-between border-b border-dashed border-slate-400 pb-2">
+                <span class="font-bold text-ink uppercase">EVERY RUPEE ACCOUNTED FOR</span>
+                <span class="px-2 py-0.5 rounded bg-emeraldTrust text-white font-bold">100% OPEN</span>
+              </div>
+              <div class="space-y-2 text-slate-800">
+                <div class="flex justify-between">
+                  <span>1. Wholesaler Base Invoice</span>
+                  <span class="font-bold">100% → Supplier</span>
+                </div>
+                <div class="flex justify-between text-emeraldTrust font-bold">
+                  <span>2. zeroprofit.store Product Markup</span>
+                  <span>₹0.00 (0.00%)</span>
+                </div>
+                <div class="flex justify-between text-emeraldTrust font-bold">
+                  <span>3. Platform / Handling Fee</span>
+                  <span>₹0.00 (Strictly Zero)</span>
+                </div>
+                <div class="flex justify-between text-amber-700">
+                  <span>4. Delivery Partner (Porter/Borzo)</span>
+                  <span class="font-bold">100% → Rider API</span>
+                </div>
+                <div class="flex justify-between text-blue-700">
+                  <span>5. Payment Gateway (UPI)</span>
+                  <span class="font-bold">₹0.00 (0% MDR)</span>
+                </div>
+              </div>
+              <div class="pt-2 border-t border-ink flex items-center justify-between text-[11px] text-slate-600">
+                <span>FUNDED BY: SEED CAPITAL + PATRONS</span>
+                <button onclick="switchTab('about')" class="underline font-bold text-ink hover:text-emeraldTrust">Open Ledger →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Same-Day Partner Procurement Strip -->
+      <div class="bg-white border border-ink rounded-2xl p-5 sm:p-6 ledger-shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="inline-flex flex-wrap items-center gap-2 font-mono-num text-xs font-bold">
+            <span class="px-2.5 py-1 rounded-full bg-ink text-paper uppercase">Same-Day · Not 10-Min</span>
+            <span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-400 uppercase">Partner Procures &amp; Delivers</span>
+          </div>
+          <span class="font-mono-num text-[11px] font-bold text-emeraldTrust">DELIVERY FEE 100% → PARTNER · OUR CUT ₹0</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="bg-paper border border-ink rounded-xl p-4 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-num text-[10px] font-bold px-2 py-0.5 bg-ink text-paper rounded">01 · ORDER</span>
+              <span class="font-mono-num text-[10px] font-bold text-emeraldTrust">0% MARKUP</span>
+            </div>
+            <h3 class="font-bold text-sm">You Order at Wholesale Rate</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Pay the chosen wholesaler&apos;s invoice rate — APMC mandi, KR Market trader, mill, distributor, or any verified bulk supplier we onboard. No store markup.
+            </p>
+          </div>
+          <div class="bg-paper border border-ink rounded-xl p-4 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-num text-[10px] font-bold px-2 py-0.5 bg-ink text-paper rounded">02 · PARTNER RUN</span>
+              <span class="font-mono-num text-[10px] font-bold text-amber-700">BATCH ROUTE</span>
+            </div>
+            <h3 class="font-bold text-sm">Partner Gets the List &amp; Procures</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Auto-wala, bike, or courier partner receives a batch of orders, picks up from the selected wholesaler(s), and runs a same-day drop route — no dark store in between.
+            </p>
+          </div>
+          <div class="bg-paper border border-ink rounded-xl p-4 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-num text-[10px] font-bold px-2 py-0.5 bg-ink text-paper rounded">03 · DOORSTEP</span>
+              <span class="font-mono-num text-[10px] font-bold text-amber-800">FEE → PARTNER</span>
+            </div>
+            <h3 class="font-bold text-sm">Same-Day Drop · Partner Earns</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Delivery charges for the route go to the partner. zeroprofit.store takes ₹0 cut on delivery and ₹0 markup on goods.
+            </p>
+          </div>
+        </div>
+        <p class="font-mono-num text-[11px] text-slate-500 border-t border-dashed border-slate-300 pt-3">
+          NO DARK STORE · NO OWNED INVENTORY · ANY VERIFIED WHOLESALER WE CHOOSE · SAME-DAY BATCH, NOT 10-MINUTE THEATER
+        </p>
+      </div>
+
+      <!-- Filter & Search Controls -->
+      <div id="catalog-section" class="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2">
+        <div id="category-filters" class="flex items-center gap-2 overflow-x-auto pb-1">
+          <!-- Populated via JS -->
+        </div>
+
+        <div class="relative w-full md:w-72">
+          <input
+            type="text"
+            id="search-input"
+            oninput="handleSearch(this.value)"
+            placeholder="Search rice, oil, ghee, dal..."
+            class="w-full pl-9 pr-4 py-2.5 bg-white border border-ink rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emeraldTrust"
+          />
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-500 absolute left-3 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- VIEW 2: 100% TRANSPARENT SPLIT-LEDGER CHECKOUT            -->
+    <!-- ========================================================= -->
+    <section id="view-checkout" class="hidden space-y-8">
+      <div class="bg-white border border-ink rounded-2xl p-6 sm:p-8 ledger-shadow">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-ink pb-6 mb-6">
+          <div>
+            <span class="font-mono-num text-xs font-bold uppercase px-2.5 py-1 rounded bg-emerald-100 text-emeraldTrust border border-emeraldTrust">
+              RADICAL OPEN-LEDGER CHECKOUT
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-2">
+              100% Transparent Payment Routing
+            </h2>
+            <p class="text-slate-600 text-sm mt-1">
+              Inspect every single rupee before you pay. No hidden packaging charges, no surge fees, and ₹0.00 retained by zeroprofit.store.
+            </p>
+          </div>
+          <button onclick="switchTab('storefront')" class="self-start md:self-auto px-4 py-2 rounded-xl border border-ink text-xs font-mono-num font-bold hover:bg-slate-100">
+            ← Add More Wholesale Items
+          </button>
+        </div>
+
+        <div id="dedicated-checkout-container" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <!-- Left 7 Cols: Cart Items & Pass-Through Configurators -->
+          <div class="lg:col-span-7 space-y-6">
+            <!-- Cart Items List -->
+            <div class="bg-paper border border-ink rounded-xl p-5 space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-300 pb-3">
+                <h3 class="font-bold text-base">1. Direct Wholesaler Basket (0.00% Markup)</h3>
+                <span id="checkout-item-count" class="font-mono-num text-xs font-bold text-emeraldTrust">0 ITEMS</span>
+              </div>
+              <div id="checkout-items-list" class="divide-y divide-slate-200">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
+            <!-- Delivery Distance Selector (100% Pass-through to Rider) -->
+            <div class="bg-paper border border-ink rounded-xl p-5 space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-bold text-base">2. Direct Delivery Partner API (100% to Rider)</h3>
+                  <p class="text-xs text-slate-600">Live hyperlocal courier dispatch (Porter / Shadowfax / Borzo). Zero markup by us.</p>
+                </div>
+                <span class="font-mono-num text-xs font-bold px-2 py-1 rounded bg-amber-100 text-amber-800 border border-amber-400">
+                  PASS-THROUGH
+                </span>
+              </div>
+              <div class="grid grid-cols-3 gap-2.5 pt-1" id="distance-selector-grid">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
+            <!-- Payment Gateway Rail Selector (UPI 0% vs Card 2% Pass-through) -->
+            <div class="bg-paper border border-ink rounded-xl p-5 space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-bold text-base">3. Payment Gateway Rail (Actual MDR Cost)</h3>
+                  <p class="text-xs text-slate-600">UPI has 0% merchant fee in India. Cards incur 2.00% Razorpay MDR passed through at exact cost.</p>
+                </div>
+                <span class="font-mono-num text-xs font-bold px-2 py-1 rounded bg-blue-100 text-blue-800 border border-blue-400">
+                  AT-COST MDR
+                </span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1" id="payment-method-grid">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
+            <!-- 4. Community & Needy Relief Donation (Mandatory Active Choice: ₹0 to ₹50, No Default) -->
+            <div id="donation-section-card" class="bg-paper border-2 border-ink rounded-xl p-5 space-y-3 transition-all">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h3 class="font-bold text-base">4. Community &amp; Needy Relief Donation</h3>
+                </div>
+                <span id="donation-status-badge" class="font-mono-num text-[11px] font-bold px-2.5 py-1 rounded bg-amber-100 text-amber-900 border border-amber-500">
+                  REQUIRED CHOICE — SELECT ANY ONE (₹0 TO ₹50)
+                </span>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 pt-1" id="checkout-donation-row">
+                <!-- Populated by JS -->
+              </div>
+              <div class="pt-1">
+                <label class="block font-mono-num text-[11px] font-bold uppercase text-slate-600 mb-1">
+                  Your Name for Public Donor Ledger (Displayed strictly as First Name + Last Initial)
+                </label>
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <input
+                    type="text"
+                    id="checkout-donor-name"
+                    value="Jigar Trivedi"
+                    oninput="updateCheckoutDonorPreview(this.value)"
+                    placeholder="e.g. Karthik Nair"
+                    class="flex-1 px-3 py-2 bg-white border border-ink rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emeraldTrust"
+                  />
+                  <span id="checkout-donor-preview" class="font-mono-num text-[11px] font-bold px-2.5 py-1.5 rounded bg-emerald-50 text-emeraldTrust border border-emeraldTrust">
+                    Public Ledger Tag: Jigar T. (you)
+                  </span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-700 font-medium pt-0.5">
+                Donation will be used to run the webstore and/or for helping needy people.
+              </p>
+              <p id="donation-validation-hint" class="hidden font-mono-num text-[11px] font-bold text-amber-800 bg-amber-50 border border-amber-400 rounded-lg px-3 py-1.5">
+                Please choose any one option above (including ₹0 if you prefer not to donate) to authorize split-ledger checkout.
+              </p>
+            </div>
+
+            <!-- 5. Optional Delivery Rider Tip (100% to Courier Partner) -->
+            <div class="bg-paper border border-ink rounded-xl p-5 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h3 class="font-bold text-base">5. Optional Delivery Rider Tip (100% to Courier)</h3>
+                  <p class="text-xs text-slate-600">100% optional, defaults to <strong>₹0</strong>. Routed directly to your delivery partner rider.</p>
+                </div>
+                <span class="font-mono-num text-[11px] font-bold px-2.5 py-1 rounded bg-amber-100 text-amber-800 border border-amber-400">
+                  100% TO RIDER • DEFAULT ₹0
+                </span>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 pt-1" id="tip-selector-row">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right 5 Cols: Live Split-Ledger Receipt & Visual Bar -->
+          <div class="lg:col-span-5">
+            <div id="checkout-receipt-box" class="bg-white border-2 border-ink rounded-2xl p-6 ledger-shadow space-y-5 sticky top-24">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- VIEW 3: ABOUT, OPEN LEDGER & SEEKING INVESTMENT / DONATE  -->
+    <!-- ========================================================= -->
+    <section id="view-about" class="hidden space-y-10">
+
+      <!-- HERO STATEMENT BANNER -->
+      <div class="bg-white border border-ink rounded-2xl p-6 sm:p-10 ledger-shadow space-y-6">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="font-mono-num text-xs font-bold uppercase px-3 py-1 rounded-full bg-ink text-paper">
+            OUR SUSTAINABILITY CHARTER
+          </span>
+          <span class="font-mono-num text-xs font-bold uppercase px-3 py-1 rounded-full bg-emerald-100 text-emeraldTrust border border-emeraldTrust">
+            DUAL-ENGINE MODEL: SEED INVESTMENT + DONATIONS
+          </span>
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.12] max-w-4xl">
+          Zero Markup on Goods. Zero Platform Fees.<br />
+          <span class="text-emeraldTrust">Sustained by Mission-Aligned Investors &amp; Community Donations.</span>
+        </h1>
+
+        <p class="text-slate-700 text-base sm:text-lg max-w-3xl leading-relaxed">
+          Most e-commerce platforms hook customers with temporary discounts, then quietly raise prices, add "handling fees," and squeeze suppliers. <strong>zeroprofit.store</strong> is engineered differently: our retail consumer storefront is permanently locked at <strong>0.00% product markup</strong> and <strong>₹0.00 platform fee</strong>. To build and run this public utility without ever taxing your groceries, we openly run on <strong>both Seed Investment and Community Donations</strong>.
+        </p>
+
+        <!-- 3-STEP ZERO-WAREHOUSE VISUAL FLOW -->
+        <div class="pt-4 border-t border-slate-200">
+          <div class="font-mono-num text-xs font-bold uppercase text-slate-500 mb-4">
+            HOW THE ZERO-WAREHOUSE PROTOCOL OPERATES (NO INVENTORY RISK)
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Step 1 -->
+            <div class="bg-paper border border-ink rounded-xl p-5 relative">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-mono-num text-xs font-bold px-2 py-0.5 bg-ink text-paper rounded">01 • ORDER</span>
+                <span class="font-mono-num text-[11px] text-emeraldTrust font-bold">0% STORE MARKUP</span>
+              </div>
+              <h3 class="font-bold text-base mb-1">Customer Orders at Mandi Rate</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                You select staples directly from verified Bengaluru wholesalers (Yeshwanthpur APMC, KR Market, direct flour &amp; oil mills) at their exact wholesale invoice rate.
+              </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="bg-paper border border-ink rounded-xl p-5 relative">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-mono-num text-xs font-bold px-2 py-0.5 bg-ink text-paper rounded">02 • SPLIT SETTLE</span>
+                <span class="font-mono-num text-[11px] text-blue-700 font-bold">AUTOMATED RAILS</span>
+              </div>
+              <h3 class="font-bold text-base mb-1">Split Payment Routes Directly</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                At checkout, automated split-settlement routes 100% of item cost to the wholesaler's bank/UPI and 100% of courier fare to the logistics partner. We retain ₹0.00.
+              </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="bg-paper border border-ink rounded-xl p-5 relative">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-mono-num text-xs font-bold px-2 py-0.5 bg-ink text-paper rounded">03 • DISPATCH</span>
+                <span class="font-mono-num text-[11px] text-amber-700 font-bold">ZERO DARK STORES</span>
+              </div>
+              <h3 class="font-bold text-base mb-1">Wholesaler Hands Off to Rider</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Our webhook triggers a Porter / Shadowfax / Borzo rider directly to the wholesaler's loading bay for doorstep delivery—eliminating warehouse rent &amp; spoilage.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DUAL SUSTAINABILITY ENGINE EXPLANATION -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Engine 1: Seed / Angel Investment -->
+        <div class="bg-white border border-ink rounded-2xl p-6 sm:p-8 ledger-shadow flex flex-col justify-between space-y-5">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-num text-xs font-bold px-2.5 py-1 rounded bg-ink text-paper uppercase">
+                ENGINE 01 • CAPITAL TO SCALE
+              </span>
+              <span class="font-mono-num text-xs font-bold text-emeraldTrust">EQUITY / SAFE ROUND</span>
+            </div>
+            <h2 class="text-2xl font-extrabold tracking-tight">
+              Why We Seek Seed &amp; Angel Investment
+            </h2>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              Building real-time ERP bridges with wholesale mandis, automated split-payment compliance, and multi-fleet logistics orchestration requires dedicated engineering. Instead of charging consumers a 20% markup, we raise patient seed capital to build high-volume rails.
+            </p>
+            <div class="bg-paper border border-slate-300 rounded-xl p-4 space-y-2">
+              <div class="font-mono-num text-xs font-bold uppercase text-ink">
+                INVESTOR THESIS &amp; LONG-TERM RETURN PATH:
+              </div>
+              <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                <li><strong>B2B Supplier SaaS &amp; Inventory Analytics:</strong> Wholesalers gain instant working-capital turnover and demand forecasting tools (optional paid SaaS tier for large distributors).</li>
+                <li><strong>Institutional &amp; Apartment Bulk Procurement Rails:</strong> Licensing our zero-markup procurement engine to hostels, cloud kitchens, and RWAs.</li>
+                <li><strong>Ethical Opt-In Membership Perks (Later):</strong> Optional priority delivery scheduling or scheduled auto-replenishment—while basic wholesale access remains 0% forever.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-slate-200 flex items-center justify-between font-mono-num text-xs">
+            <span class="text-slate-500">CONSUMER STOREFRONT GUARANTEE:</span>
+            <span class="font-bold text-emeraldTrust">PERMANENTLY 0.00% MARKUP</span>
+          </div>
+        </div>
+
+        <!-- Engine 2: Community Donations / Patronage -->
+        <div class="bg-white border border-ink rounded-2xl p-6 sm:p-8 ledger-shadow flex flex-col justify-between space-y-5">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-num text-xs font-bold px-2.5 py-1 rounded bg-emeraldTrust text-white uppercase">
+                ENGINE 02 • COMMUNITY PATRONAGE
+              </span>
+              <span class="font-mono-num text-xs font-bold text-ink">0% EQUITY • 100% PUBLIC</span>
+            </div>
+            <h2 class="text-2xl font-extrabold tracking-tight">
+              Why We Also Accept Community Donations
+            </h2>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              Just like Wikipedia, Signal, and open-source software, essential price-transparency infrastructure shouldn't depend solely on venture timelines. Community donations pay our immediate day-to-day utility bills from Day 1.
+            </p>
+            <div class="bg-paper border border-slate-300 rounded-xl p-4 space-y-2">
+              <div class="font-mono-num text-xs font-bold uppercase text-ink">
+                WHERE EVERY DONATED RUPEE GOES:
+              </div>
+              <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                <li><strong>Cloud Hosting &amp; Database Nodes:</strong> Keeps the open-ledger storefront fast and resilient during peak weekend grocery runs.</li>
+                <li><strong>Maps, Geocoding &amp; Logistics Webhook Calls:</strong> Covers raw API compute for distance calculation and rider dispatch.</li>
+                <li><strong>Zero Dark Patterns:</strong> Donations are never required to shop, never pre-checked at checkout, and published monthly on our public ledger below.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-slate-200 flex items-center justify-between font-mono-num text-xs">
+            <span class="text-slate-500">AVERAGE HOUSEHOLD SAVINGS:</span>
+            <span class="font-bold text-emeraldTrust">₹650 – ₹1,400 / MONTH</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVE PUBLIC OPEN-LEDGER TRANSPARENCY BOARD -->
+      <div class="bg-ink text-paper border border-ink rounded-2xl p-6 sm:p-8 ledger-shadow-emerald space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-700 pb-4">
+          <div>
+            <div class="flex items-center gap-2 font-mono-num text-xs text-emerald-400 font-bold">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span>LIVE PUBLIC OPEN-LEDGER BOARD • NOVEMBER 2026</span>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-extrabold mt-1">Monthly Operating Burn vs. Community &amp; Seed Runway</h3>
+          </div>
+          <span class="font-mono-num text-xs px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300">
+            AUDITED PUBLICLY • ZERO HIDDEN REVENUE
+          </span>
+        </div>
+
+        <!-- 4 Key Ledger Metrics -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono-num">
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-1">
+            <div class="text-[11px] text-slate-400 uppercase">Cloud, Maps &amp; API Burn</div>
+            <div class="text-2xl font-bold text-white">₹42,500<span class="text-xs font-normal text-slate-400">/mo</span></div>
+            <div class="text-[11px] text-amber-400">AWS, Geocoding &amp; Webhook Compute</div>
+          </div>
+
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-1">
+            <div class="text-[11px] text-slate-400 uppercase">Core Eng &amp; Ops Burn</div>
+            <div class="text-2xl font-bold text-white">₹2,10,000<span class="text-xs font-normal text-slate-400">/mo</span></div>
+            <div class="text-[11px] text-blue-400">2 Full-Stack Builders + Mandi Ops</div>
+          </div>
+
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-1">
+            <div class="text-[11px] text-slate-400 uppercase">Community Donations (Nov)</div>
+            <div id="ledger-donation-total" class="text-2xl font-bold text-emerald-400">₹31,850</div>
+            <div class="text-[11px] text-slate-300">Covers 75% of Cloud &amp; API Infra</div>
+          </div>
+
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-1">
+            <div class="text-[11px] text-slate-400 uppercase">Pre-Seed Round Target</div>
+            <div class="text-2xl font-bold text-emerald-400">₹75,00,000</div>
+            <div id="ledger-investor-pledges" class="text-[11px] text-slate-300">₹22.5L Soft-Committed • 18 Mo Runway</div>
+          </div>
+        </div>
+
+        <!-- Monthly Cost Breakdown Progress Bar -->
+        <div class="space-y-2 pt-2">
+          <div class="flex flex-wrap justify-between text-xs font-mono-num text-slate-300">
+            <span>TOTAL MONTHLY INFRA + TEAM BURN: <strong class="text-white">₹2,52,500 / mo</strong></span>
+            <span>RETAIL COMMISSION COLLECTED: <strong class="text-emerald-400">₹0.00</strong></span>
+          </div>
+          <div class="w-full h-4 bg-slate-800 rounded-full overflow-hidden flex border border-slate-700">
+            <div style="width: 17%" class="bg-amber-400 h-full" title="Cloud & Maps API: 17%"></div>
+            <div style="width: 68%" class="bg-blue-500 h-full" title="Core Engineering: 68%"></div>
+            <div style="width: 15%" class="bg-emerald-400 h-full" title="Compliance & Legal: 15%"></div>
+          </div>
+          <div class="flex flex-wrap gap-4 text-[11px] font-mono-num text-slate-400">
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-400"></span> Cloud &amp; APIs (17%)</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500"></span> Core Engineering (68%)</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-400"></span> Legal, GST &amp; Split-Pay Compliance (15%)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TWO INTERACTIVE ACTION CARDS SIDE-BY-SIDE -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        
+        <!-- CARD A: FOR ANGEL & SEED INVESTORS -->
+        <div class="bg-white border-2 border-ink rounded-2xl p-6 sm:p-8 ledger-shadow space-y-6">
+          <div class="space-y-2 border-b border-slate-200 pb-4">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-num text-xs font-bold uppercase px-2.5 py-1 rounded bg-ink text-paper">
+                CARD A • ANGEL &amp; SEED INVESTORS
+              </span>
+              <span class="font-mono-num text-xs font-bold text-emeraldTrust">PRE-SEED OPEN</span>
+            </div>
+            <h3 class="text-2xl font-extrabold tracking-tight pt-1">
+              Back the Zero-Margin Protocol
+            </h3>
+            <p class="text-sm text-slate-600">
+              Raising <strong>₹75 Lakhs (~$90k)</strong> on an India-compliant iSAFE / Equity note to scale across 15 Bengaluru wholesale clusters and onboard 50,000 households.
+            </p>
+          </div>
+
+          <!-- Use-of-Funds Breakdown Bar -->
+          <div class="space-y-2">
+            <div class="flex justify-between font-mono-num text-xs font-bold">
+              <span>USE OF FUNDS (₹75,00,000 TARGET)</span>
+              <span class="text-emeraldTrust">18-MONTH RUNWAY</span>
+            </div>
+            <div class="w-full h-3.5 rounded-full overflow-hidden flex border border-ink">
+              <div style="width: 55%" class="bg-ink h-full"></div>
+              <div style="width: 30%" class="bg-emeraldTrust h-full"></div>
+              <div style="width: 15%" class="bg-amber-400 h-full"></div>
+            </div>
+            <div class="grid grid-cols-3 gap-2 font-mono-num text-[11px] pt-1">
+              <div><strong class="text-ink">55%</strong> Engineering &amp; ERP Rails</div>
+              <div><strong class="text-emeraldTrust">30%</strong> Logistics &amp; Mandi Onboarding</div>
+              <div><strong class="text-amber-700">15%</strong> Ops, Legal &amp; Compliance</div>
+            </div>
+          </div>
+
+          <!-- Interactive Investor Interest Form -->
+          <form id="investor-form" onsubmit="handleInvestorSubmit(event)" class="space-y-4 pt-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block font-mono-num text-[11px] font-bold uppercase mb-1">Your Name *</label>
+                <input type="text" id="inv-name" required placeholder="e.g. Aarav Mehta" class="w-full px-3.5 py-2.5 bg-paper border border-ink rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emeraldTrust" />
+              </div>
+              <div>
+                <label class="block font-mono-num text-[11px] font-bold uppercase mb-1">Fund / Angel Syndicate *</label>
+                <input type="text" id="inv-firm" required placeholder="e.g. FirstPrinciples / Angel" class="w-full px-3.5 py-2.5 bg-paper border border-ink rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emeraldTrust" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block font-mono-num text-[11px] font-bold uppercase mb-1">Work Email *</label>
+                <input type="email" id="inv-email" required placeholder="aarav@fund.vc" class="w-full px-3.5 py-2.5 bg-paper border border-ink rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emeraldTrust" />
+              </div>
+              <div>
+                <label class="block font-mono-num text-[11px] font-bold uppercase mb-1">Indicative Ticket Size</label>
+                <select id="inv-ticket" class="w-full px-3.5 py-2.5 bg-paper border border-ink rounded-xl text-sm font-mono-num font-semibold focus:outline-none focus:ring-2 focus:ring-emeraldTrust">
+                  <option value="5">₹5 Lakhs – ₹10 Lakhs (Angel)</option>
+                  <option value="15" selected>₹10 Lakhs – ₹25 Lakhs (Lead Angel)</option>
+                  <option value="35">₹25 Lakhs+ (Micro-VC / Pre-Seed)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-mono-num text-[11px] font-bold uppercase mb-1">Thesis Note / Questions (Optional)</label>
+              <textarea id="inv-note" rows="2" placeholder="Interested in unit economics, split-settlement compliance, or B2B SaaS roadmap..." class="w-full px-3.5 py-2 bg-paper border border-ink rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emeraldTrust"></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-3.5 px-5 rounded-xl bg-ink text-paper font-bold text-sm hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
+              <span>Request Pitch Deck &amp; Express Interest</span>
+              <span>→</span>
+            </button>
+          </form>
+
+          <!-- Confirmation Banner (Hidden until submit) -->
+          <div id="investor-confirmation" class="hidden bg-emerald-50 border border-emeraldTrust rounded-xl p-4 space-y-2">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- CARD B: FOR COMMUNITY DONORS & BELIEVERS -->
+        <div class="bg-white border-2 border-ink rounded-2xl p-6 sm:p-8 ledger-shadow-emerald space-y-6">
+          <div class="space-y-2 border-b border-slate-200 pb-4">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-num text-xs font-bold uppercase px-2.5 py-1 rounded bg-emeraldTrust text-white">
+                CARD B • COMMUNITY DONORS &amp; PATRONS
+              </span>
+              <span class="font-mono-num text-xs font-bold text-ink">0% EQUITY • PUBLIC LEDGER</span>
+            </div>
+            <h3 class="text-2xl font-extrabold tracking-tight pt-1">
+              Fuel the Servers Today
+            </h3>
+            <p class="text-sm text-slate-600">
+              100% non-equity patronage logged publicly on our open ledger. Keep zero-markup groceries running for families across Bengaluru without paywalls or ads.
+            </p>
+          </div>
+
+          <!-- Preset Donation Selector -->
+          <div class="space-y-3">
+            <label class="block font-mono-num text-xs font-bold uppercase">SELECT CONTRIBUTION AMOUNT (INR)</label>
+            <div class="grid grid-cols-4 gap-2" id="donation-preset-grid">
+              <button type="button" onclick="selectDonationAmount(100)" id="don-btn-100" class="don-preset-btn py-2.5 rounded-xl border border-ink font-mono-num font-bold text-sm bg-paper hover:bg-slate-100">
+                ₹100
+              </button>
+              <button type="button" onclick="selectDonationAmount(500)" id="don-btn-500" class="don-preset-btn py-2.5 rounded-xl border-2 border-emeraldTrust font-mono-num font-bold text-sm bg-emerald-50 text-emeraldTrust">
+                ₹500
+              </button>
+              <button type="button" onclick="selectDonationAmount(2000)" id="don-btn-2000" class="don-preset-btn py-2.5 rounded-xl border border-ink font-mono-num font-bold text-sm bg-paper hover:bg-slate-100">
+                ₹2,000
+              </button>
+              <button type="button" onclick="focusCustomDonation()" id="don-btn-custom" class="don-preset-btn py-2.5 rounded-xl border border-ink font-mono-num font-bold text-sm bg-paper hover:bg-slate-100">
+                Custom
+              </button>
+            </div>
+
+            <!-- Custom Input & Donor Name -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div>
+                <label class="block font-mono-num text-[11px] font-bold uppercase mb-1">Amount (₹)</label>
+                <input type="number" id="don-amount-input" min="10" value="500" oninput="updateDonationImpact(this.value)" class="w-full px-3.5 py-2.5 bg-paper border border-ink rounded-xl font-mono-num font-bold text-sm focus:outline-none focus:ring-2 focus:ring-emeraldTrust" />
+              </div>
+              <div>
+                <label class="block font-mono-num text-[11px] font-bold uppercase mb-1">First &amp; Last Name *</label>
+                <input type="text" id="don-name-input" placeholder="e.g. Ananya Menon" oninput="updateDirectDonorPreview(this.value)" class="w-full px-3.5 py-2.5 bg-paper border border-ink rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emeraldTrust" />
+                <div id="direct-donor-preview" class="font-mono-num text-[10px] text-emeraldTrust font-bold mt-1">
+                  Published publicly as: Anonymous C.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Impact Meter -->
+          <div class="bg-emerald-50/80 border border-emeraldTrust rounded-xl p-4 space-y-1.5">
+            <div class="font-mono-num text-[11px] font-bold uppercase text-emeraldTrust">
+              DIRECT INFRASTRUCTURE IMPACT
+            </div>
+            <p id="donation-impact-text" class="text-sm font-semibold text-ink">
+              ₹500 covers server compute &amp; logistics API routing for ~250 zero-profit household orders.
+            </p>
+          </div>
+
+          <button type="button" onclick="handleDonationSubmit()" class="w-full py-3.5 px-5 rounded-xl bg-emeraldTrust text-white font-bold text-sm hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2">
+            <span>Simulate UPI Patron Pledge &amp; Issue Public Receipt</span>
+            <span>⚡</span>
+          </button>
+
+          <!-- Simulated Instant UPI / Patron Pledge Receipt -->
+          <div id="donation-receipt-box" class="hidden bg-paper border-2 border-dashed border-ink rounded-xl p-4 font-mono-num text-xs space-y-2">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- PUBLIC DONATION TRANSPARENCY LEDGER & TOP 10 LEADERBOARDS -->
+      <!-- ========================================================= -->
+      <div id="public-donor-ledger-section" class="bg-white border-2 border-ink rounded-2xl p-6 sm:p-8 ledger-shadow space-y-8">
+        <!-- Section Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-ink pb-5">
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="font-mono-num text-xs font-bold uppercase px-2.5 py-1 rounded bg-emerald-100 text-emeraldTrust border border-emeraldTrust">
+                100% PUBLIC DONATION TRANSPARENCY
+              </span>
+              <span class="font-mono-num text-xs font-bold uppercase px-2.5 py-1 rounded bg-paper border border-ink text-ink">
+                PRIVACY-SAFE FORMAT: FIRST NAME + LAST INITIAL
+              </span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-2">
+              Open Donor Ledger &amp; Top 10 Leaderboards
+            </h2>
+            <p class="text-sm text-slate-600 mt-1 max-w-3xl">
+              Every rupee contributed via Checkout Micro-Donations or Direct Patronage is logged publicly with <strong>First Name + First Character of Last Name</strong>, exact INR amount, and date—with zero hidden funds.
+            </p>
+          </div>
+          <div class="bg-paper border border-ink rounded-xl px-4 py-3 font-mono-num text-xs space-y-0.5 self-start lg:self-auto">
+            <div class="text-slate-500 uppercase text-[10px]">Verified Transparent Entries</div>
+            <div id="public-ledger-summary-stats" class="font-extrabold text-base text-emeraldTrust">
+              24 Donations • ₹32,020 Logged
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEWING LEDGER AS IDENTITY SWITCHER BAR -->
+        <div class="bg-emerald-50/70 border border-emeraldTrust rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex flex-wrap items-center gap-2 font-mono-num text-xs">
+            <span class="px-2 py-0.5 rounded bg-emeraldTrust text-white font-bold uppercase text-[10px]">
+              ACTIVE VIEWER TAG
+            </span>
+            <span class="text-slate-700">Viewing ledger as:</span>
+            <span id="active-viewer-pill" class="px-2.5 py-1 rounded-lg bg-white border border-emeraldTrust font-extrabold text-ink">
+              Jigar T. (you)
+            </span>
+            <span class="text-[11px] text-slate-600 hidden sm:inline">
+              — Automatically highlights your row with <strong class="text-emeraldTrust">(you)</strong> in Top 10 &amp; All Donations
+            </span>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <input
+              type="text"
+              id="viewer-identity-input"
+              value="Jigar Trivedi"
+              placeholder="Enter First & Last Name..."
+              onkeydown="if(event.key==='Enter'){event.preventDefault(); applyViewerIdentityInput();}"
+              class="px-3 py-1.5 bg-white border border-ink rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emeraldTrust w-44 sm:w-48"
+            />
+            <button
+              type="button"
+              onclick="applyViewerIdentityInput()"
+              class="px-3 py-1.5 rounded-lg bg-ink text-paper font-mono-num text-[11px] font-bold hover:bg-slate-800 transition-colors"
+            >
+              Set Identity
+            </button>
+            <button
+              type="button"
+              onclick="clearViewerIdentity()"
+              class="px-2.5 py-1.5 rounded-lg bg-white border border-ink text-slate-700 font-mono-num text-[11px] font-bold hover:bg-slate-100 transition-colors"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <!-- TOP 10 DONORS OF THE DAY & TOP 10 DONORS OF THE WEEK -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Leaderboard 1: Top 10 Donors of the Day -->
+          <div class="bg-paper border border-ink rounded-xl overflow-hidden flex flex-col">
+            <div class="bg-ink text-paper px-5 py-3.5 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div class="font-mono-num text-[10px] text-emerald-400 font-bold uppercase">LIVE DAILY RANKING</div>
+                <h3 class="font-extrabold text-base">Top 10 Donors of the Day</h3>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="day-viewer-rank-badge" class="hidden font-mono-num text-[11px] font-extrabold px-2.5 py-1 rounded bg-emeraldTrust text-white border border-emerald-300">
+                  Your Rank: #2 • ₹40
+                </span>
+                <span class="font-mono-num text-xs font-bold px-2.5 py-1 rounded bg-slate-800 border border-slate-600 text-emerald-300">
+                  24 Nov 2026
+                </span>
+              </div>
+            </div>
+            <div class="overflow-x-auto flex-1">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-300 bg-white font-mono-num text-[11px] uppercase text-slate-500">
+                    <th class="py-2.5 px-3.5">Rank</th>
+                    <th class="py-2.5 px-3.5">Donor</th>
+                    <th class="py-2.5 px-3.5 text-right">Amount</th>
+                    <th class="py-2.5 px-3.5 text-right">Date &amp; Time</th>
+                  </tr>
+                </thead>
+                <tbody id="top-donors-day-tbody" class="divide-y divide-slate-200 text-xs font-mono-num">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Leaderboard 2: Top 10 Donors of the Week -->
+          <div class="bg-paper border border-ink rounded-xl overflow-hidden flex flex-col">
+            <div class="bg-emeraldTrust text-white px-5 py-3.5 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div class="font-mono-num text-[10px] text-emerald-100 font-bold uppercase">7-DAY ROLLING RANKING</div>
+                <h3 class="font-extrabold text-base">Top 10 Donors of the Week</h3>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="week-viewer-rank-badge" class="hidden font-mono-num text-[11px] font-extrabold px-2.5 py-1 rounded bg-ink text-emerald-300 border border-emerald-200/40">
+                  Your Rank: #8 • ₹40
+                </span>
+                <span class="font-mono-num text-xs font-bold px-2.5 py-1 rounded bg-emerald-800/80 border border-emerald-300/40 text-white">
+                  18 Nov – 24 Nov 2026
+                </span>
+              </div>
+            </div>
+            <div class="overflow-x-auto flex-1">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-300 bg-white font-mono-num text-[11px] uppercase text-slate-500">
+                    <th class="py-2.5 px-3.5">Rank</th>
+                    <th class="py-2.5 px-3.5">Donor</th>
+                    <th class="py-2.5 px-3.5 text-right">Weekly Total</th>
+                    <th class="py-2.5 px-3.5 text-right">Latest Date</th>
+                  </tr>
+                </thead>
+                <tbody id="top-donors-week-tbody" class="divide-y divide-slate-200 text-xs font-mono-num">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ALL DONATIONS — COMPLETE TRANSPARENT LOG -->
+        <div class="space-y-4 pt-2">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div>
+              <h3 class="font-extrabold text-lg">All Donations — Complete Transparent Log</h3>
+              <p class="text-xs text-slate-600">
+                Real-time chronological audit trail of every donation (First Name + Last Initial, Amount, Date, Channel &amp; Allocation).
+              </p>
+            </div>
+            <!-- Filter Pills -->
+            <div id="donation-ledger-filters" class="flex flex-wrap items-center gap-1.5">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <div class="border border-ink rounded-xl overflow-hidden bg-paper">
+            <div class="overflow-x-auto max-h-[440px] overflow-y-auto">
+              <table class="w-full text-left border-collapse">
+                <thead class="sticky top-0 bg-ink text-paper font-mono-num text-[11px] uppercase z-10">
+                  <tr>
+                    <th class="py-3 px-4">Donor (First + Last Initial)</th>
+                    <th class="py-3 px-4 text-right">Amount (₹)</th>
+                    <th class="py-3 px-4">Date &amp; Time</th>
+                    <th class="py-3 px-4">Channel</th>
+                    <th class="py-3 px-4">Transparent Allocation</th>
+                  </tr>
+                </thead>
+                <tbody id="all-donations-tbody" class="divide-y divide-slate-200 bg-white font-mono-num text-xs">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-ink mt-12 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="font-extrabold text-base">zeroprofit.store</span>
+          <span class="font-mono-num text-[11px] px-2 py-0.5 rounded bg-emerald-100 text-emeraldTrust font-bold">0.00% MARGIN</span>
+        </div>
+        <p class="text-xs text-slate-600">
+          Open-ledger hyperlocal wholesale protocol. Zero warehouses. Zero platform fees. Sustained by Seed Investors &amp; Community Donors.
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-4 text-xs font-mono-num">
+        <button onclick="switchTab('storefront')" class="hover:underline font-bold">Storefront</button>
+        <button onclick="switchTab('checkout')" class="hover:underline font-bold">Split Checkout</button>
+        <button onclick="switchTab('about')" class="hover:underline font-bold text-emeraldTrust">About • Invest / Donate</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================= -->
+  <!-- SLIDE-OVER CART DRAWER                                    -->
+  <!-- ========================================================= -->
+  <div id="cart-drawer-backdrop" onclick="toggleCartDrawer(false)" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden transition-opacity"></div>
+  <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white border-l-2 border-ink z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+    <!-- Drawer Header -->
+    <div class="p-5 border-b border-ink flex items-center justify-between bg-paper">
+      <div>
+        <span class="font-mono-num text-[10px] font-bold uppercase text-emeraldTrust">100% OPEN-LEDGER RECEIPT</span>
+        <h3 class="font-extrabold text-lg">Your Wholesale Basket</h3>
+      </div>
+      <button onclick="toggleCartDrawer(false)" class="p-2 rounded-lg border border-ink bg-white hover:bg-slate-100 font-mono-num text-xs font-bold">
+        ESC / CLOSE ✕
+      </button>
+    </div>
+
+    <!-- Drawer Body -->
+    <div id="drawer-body" class="flex-1 overflow-y-auto p-5 space-y-5">
+      <!-- Populated via JS -->
+    </div>
+
+    <!-- Drawer Footer -->
+    <div id="drawer-footer" class="p-5 border-t border-ink bg-paper space-y-3">
+      <!-- Populated via JS -->
+    </div>
+  </aside>
+
+  <!-- ========================================================= -->
+  <!-- INSPECT WHOLESALE INVOICE MODAL                           -->
+  <!-- ========================================================= -->
+  <div id="inspect-modal-backdrop" onclick="closeInspectModal()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="bg-white border-2 border-ink rounded-2xl max-w-md w-full p-6 ledger-shadow space-y-4">
+      <div class="flex items-start justify-between border-b border-dashed border-slate-400 pb-3">
+        <div>
+          <span class="font-mono-num text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-100 text-emeraldTrust">
+            VERIFIED MANDI / MILL INVOICE
+          </span>
+          <h3 id="modal-prod-name" class="font-extrabold text-lg mt-1">Product Name</h3>
+          <p id="modal-prod-source" class="font-mono-num text-xs text-slate-600">Source</p>
+        </div>
+        <button onclick="closeInspectModal()" class="px-2.5 py-1 rounded-lg border border-ink font-mono-num text-xs font-bold hover:bg-slate-100">
+          ✕
+        </button>
+      </div>
+
+      <div id="modal-invoice-details" class="bg-paper border border-ink rounded-xl p-4 font-mono-num text-xs space-y-2.5">
+        <!-- Populated via JS -->
+      </div>
+
+      <div class="flex items-center justify-between gap-3 pt-1">
+        <button onclick="closeInspectModal()" class="flex-1 py-2.5 rounded-xl border border-ink text-xs font-bold hover:bg-slate-100">
+          Close Receipt
+        </button>
+        <button id="modal-add-btn" class="flex-1 py-2.5 rounded-xl bg-ink text-paper text-xs font-bold hover:bg-slate-800">
+          + Add at Wholesale Cost
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- JAVASCRIPT APPLICATION LOGIC                              -->
+  <!-- ========================================================= -->
+  <script>
+    // 1. VERIFIED BENGALURU WHOLESALE CATALOG DATA
+    const PRODUCTS = [
+      {
+        id: 'sona-masoori-10kg',
+        name: 'Aged Sona Masoori Steam Rice',
+        packSize: '10 kg Bag',
+        category: 'Grains & Staples',
+        wholesaler: 'Sri Lakshmi Venkateshwara Traders, Yeshwanthpur APMC',
+        invoiceBatch: 'APMC-YPR-8841',
+        mrp: 680,
+        wholesalePrice: 515,
+        gstIncluded: '0% (Exempt Unbranded Staple)',
+        unitWeightKg: 10,
+      },
+      {
+        id: 'mp-sharbati-atta-10kg',
+        name: 'MP Sharbati Whole Wheat Chakki Atta',
+        packSize: '10 kg Pack',
+        category: 'Grains & Staples',
+        wholesaler: 'Kaveri Roller Flour Mills, Peenya Industrial Area',
+        invoiceBatch: 'KRFM-2026-412',
+        mrp: 540,
+        wholesalePrice: 410,
+        gstIncluded: '5% GST Included in Base',
+        unitWeightKg: 10,
+      },
+      {
+        id: 'cold-pressed-groundnut-5l',
+        name: 'Wood-Pressed Groundnut Cooking Oil',
+        packSize: '5 Litre Can',
+        category: 'Oils & Ghee',
+        wholesaler: 'Nandi Oil Mills & Ghani Collective, Tumakuru-BLR',
+        invoiceBatch: 'NOM-5L-902',
+        mrp: 1150,
+        wholesalePrice: 865,
+        gstIncluded: '5% GST Included in Base',
+        unitWeightKg: 4.6,
+      },
+      {
+        id: 'nandini-pure-ghee-1l',
+        name: 'Pure Cow Ghee (Bulk Carton Split)',
+        packSize: '1 Litre Pouch',
+        category: 'Oils & Ghee',
+        wholesaler: 'KR Market Dairy Bulk Distributor #14',
+        invoiceBatch: 'KRM-DRY-119',
+        mrp: 650,
+        wholesalePrice: 558,
+        gstIncluded: '12% GST Included in Base',
+        unitWeightKg: 1,
+      },
+      {
+        id: 'unpolished-toor-dal-5kg',
+        name: 'Kalaburagi Unpolished Toor Dal',
+        packSize: '5 kg Bulk Pack',
+        category: 'Pulses & Dals',
+        wholesaler: 'Gulbarga Pulse Syndicate, Yeshwanthpur Mandi',
+        invoiceBatch: 'GPS-TD-773',
+        mrp: 920,
+        wholesalePrice: 710,
+        gstIncluded: '0% (Unbranded Pulse)',
+        unitWeightKg: 5,
+      },
+      {
+        id: 'organic-jaggery-powder-2kg',
+        name: 'Mandya Chemical-Free Jaggery Powder',
+        packSize: '2 kg Pouch',
+        category: 'Essentials & Spices',
+        wholesaler: 'Mandya Farmers Cooperative Wholesale Depot',
+        invoiceBatch: 'MFC-JAG-305',
+        mrp: 220,
+        wholesalePrice: 142,
+        gstIncluded: '0% GST',
+        unitWeightKg: 2,
+      },
+      {
+        id: 'byadagi-chilli-powder-1kg',
+        name: 'Byadagi Stemless Red Chilli Powder',
+        packSize: '1 kg Catering Pack',
+        category: 'Essentials & Spices',
+        wholesaler: 'Malnad Spice Wholesale House, Avenue Road',
+        invoiceBatch: 'MSW-BYD-618',
+        mrp: 580,
+        wholesalePrice: 395,
+        gstIncluded: '5% GST Included in Base',
+        unitWeightKg: 1,
+      },
+      {
+        id: 'chana-dal-2kg',
+        name: 'Farm-Grade Split Bengal Gram (Chana Dal)',
+        packSize: '2 kg Pack',
+        category: 'Pulses & Dals',
+        wholesaler: 'Gulbarga Pulse Syndicate, Yeshwanthpur Mandi',
+        invoiceBatch: 'GPS-CD-409',
+        mrp: 260,
+        wholesalePrice: 188,
+        gstIncluded: '0% GST',
+        unitWeightKg: 2,
+      },
+    ];
+
+    // 2. HYPERLOCAL DELIVERY PARTNER TIERS (100% PASS-THROUGH)
+    const DELIVERY_TIERS = [
+      { id: '2km', label: '0–3 km (Local)', partner: 'Borzo / Shadowfax Bike', fee: 35 },
+      { id: '5km', label: '3–6 km (Mid)', partner: 'Porter 2-Wheeler API', fee: 55 },
+      { id: '8km', label: '6–10 km (Cross-City)', partner: 'Porter Mini / EV Cargo', fee: 85 },
+    ];
+
+    // HELPER: FORMAT ANY NAME STRICTLY AS "FirstName L." (Privacy-Preserving Transparency)
+    function formatDonorName(rawName) {
+      const cleaned = (rawName || '').trim().replace(/\s+/g, ' ');
+      if (!cleaned) return 'Anonymous C.';
+      const parts = cleaned.split(' ');
+      const firstRaw = parts[0].replace(/[^a-zA-Z0-9]/g, '') || 'Citizen';
+      const firstName = firstRaw.charAt(0).toUpperCase() + firstRaw.slice(1);
+      if (parts.length > 1) {
+        const lastRaw = parts[parts.length - 1].replace(/[^a-zA-Z0-9]/g, '');
+        const lastInitial = lastRaw ? lastRaw.charAt(0).toUpperCase() : 'C';
+        return `${firstName} ${lastInitial}.`;
+      }
+      return `${firstName} C.`;
+    }
+
+    // INITIAL VERIFIED PUBLIC DONATION RECORDS (Today = 24 Nov 2026, Week = 18–24 Nov 2026)
+    const INITIAL_DONATIONS = [
+      // Today's Donations (24 Nov 2026) — includes Vineet W. (₹50) & Jigar T. (₹40) in Top 10 of the Day
+      { id: 'DON-9028', donor: formatDonorName('Vineet Wagh'), amount: 50, date: '24 Nov 2026', time: '11:36 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9027', donor: formatDonorName('Jigar Trivedi'), amount: 20, date: '24 Nov 2026', time: '11:28 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9026', donor: formatDonorName('Jigar Trivedi'), amount: 20, date: '24 Nov 2026', time: '09:14 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9025', donor: formatDonorName('Ananya Menon'), amount: 35, date: '24 Nov 2026', time: '10:58 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9024', donor: formatDonorName('Vikramaditya Singh'), amount: 30, date: '24 Nov 2026', time: '10:34 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9023', donor: formatDonorName('Meera Nair'), amount: 30, date: '24 Nov 2026', time: '10:05 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9022', donor: formatDonorName('Siddharth Hegde'), amount: 25, date: '24 Nov 2026', time: '09:47 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9021', donor: formatDonorName('Priya Deshmukh'), amount: 20, date: '24 Nov 2026', time: '09:18 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9020', donor: formatDonorName('Arjun Subramanian'), amount: 20, date: '24 Nov 2026', time: '08:52 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9019', donor: formatDonorName('Kavitha Bhat'), amount: 10, date: '24 Nov 2026', time: '08:29 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9018', donor: formatDonorName('Nikhil Joshi'), amount: 10, date: '24 Nov 2026', time: '08:04 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9017', donor: formatDonorName('Deepa Venkatesh'), amount: 5, date: '24 Nov 2026', time: '07:45 AM', isToday: true, isThisWeek: true, source: 'Checkout', purpose: 'Webstore & Needy Relief' },
+
+      // Earlier This Week (18 Nov – 23 Nov 2026)
+      { id: 'DON-9014', donor: formatDonorName('Prashanth Gowda'), amount: 4500, date: '23 Nov 2026', time: '07:40 PM', isToday: false, isThisWeek: true, source: 'Direct Patron', purpose: 'Webstore Ops & Servers' },
+      { id: 'DON-9013', donor: formatDonorName('Nandini Pai'), amount: 3000, date: '22 Nov 2026', time: '04:15 PM', isToday: false, isThisWeek: true, source: 'Direct Patron', purpose: 'Needy Relief & Webstore' },
+      { id: 'DON-9012', donor: formatDonorName('Harish Chandra'), amount: 2200, date: '21 Nov 2026', time: '06:30 PM', isToday: false, isThisWeek: true, source: 'Direct Patron', purpose: 'Webstore Ops & Maps API' },
+      { id: 'DON-9011', donor: formatDonorName('Rohan Kulkarni'), amount: 5000, date: '20 Nov 2026', time: '02:10 PM', isToday: false, isThisWeek: true, source: 'Direct Patron', purpose: 'Webstore Ops & Servers' },
+      { id: 'DON-9010', donor: formatDonorName('Aishwarya Kamath'), amount: 1800, date: '20 Nov 2026', time: '11:05 AM', isToday: false, isThisWeek: true, source: 'Direct Patron', purpose: 'Needy Relief Staples' },
+      { id: 'DON-9009', donor: formatDonorName('Suresh Babu'), amount: 1000, date: '19 Nov 2026', time: '05:50 PM', isToday: false, isThisWeek: true, source: 'Direct Patron', purpose: 'Webstore Ops & Servers' },
+      { id: 'DON-9008', donor: formatDonorName('Divya Krishnan'), amount: 500, date: '19 Nov 2026', time: '12:25 PM', isToday: false, isThisWeek: true, source: 'Direct Patron', purpose: 'Needy Relief & Webstore' },
+      { id: 'DON-9007', donor: formatDonorName('Manoj Tiwari'), amount: 250, date: '18 Nov 2026', time: '08:15 PM', isToday: false, isThisWeek: true, source: 'Direct Patron', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9006', donor: formatDonorName('Pooja Agarwal'), amount: 150, date: '18 Nov 2026', time: '03:40 PM', isToday: false, isThisWeek: true, source: 'Direct Patron', purpose: 'Webstore & Needy Relief' },
+      { id: 'DON-9005', donor: formatDonorName('Tarun Malhotra'), amount: 100, date: '18 Nov 2026', time: '10:12 AM', isToday: false, isThisWeek: true, source: 'Direct Patron', purpose: 'Webstore & Needy Relief' },
+    ];
+
+    // 3. APPLICATION STATE
+    let state = {
+      activeTab: 'storefront',
+      selectedCategory: 'All',
+      searchQuery: '',
+      // Pre-populate 2 staple items so user can immediately inspect the split-ledger cart
+      cart: {
+        'sona-masoori-10kg': 1,
+        'cold-pressed-groundnut-5l': 1,
+      },
+      deliveryTierId: '2km',
+      paymentMethod: 'upi', // 'upi' (0% MDR) or 'card' (2.00% MDR pass-through)
+      checkoutDonation: null, // Mandatory explicit choice: null until user selects 0, 5, 10, 20, 30, or 50
+      checkoutDonorName: 'Jigar Trivedi',
+      currentViewerFormatted: formatDonorName('Jigar Trivedi'), // Active viewer tag ("Jigar T.") highlighted with (you)
+      donationValidationError: false,
+      optionalTip: 0, // 100% optional rider tip (default ₹0)
+      lastOrderReceipt: null,
+      donations: [...INITIAL_DONATIONS],
+      donationLedgerFilter: 'all', // 'all' | 'today' | 'week' | 'checkout' | 'patron'
+      communityDonationsTotal: 32020,
+      investorSoftCommittedLakhs: 22.5,
+      selectedDonationPreset: 500,
+    };
+
+    // ---------- HELPERS ----------
+    function formatINR(n) {
+      const num = Number(n) || 0;
+      return '₹' + num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function getProduct(id) {
+      return PRODUCTS.find((p) => p.id === id);
+    }
+
+    function calculateLedger() {
+      const lines = [];
+      let wholesaleSubtotal = 0;
+      let totalItems = 0;
+      let totalWeightKg = 0;
+
+      Object.entries(state.cart).forEach(([id, qty]) => {
+        const q = Number(qty) || 0;
+        if (q <= 0) return;
+        const p = getProduct(id);
+        if (!p) return;
+        const lineTotal = p.wholesalePrice * q;
+        wholesaleSubtotal += lineTotal;
+        totalItems += q;
+        totalWeightKg += p.unitWeightKg * q;
+        lines.push({ product: p, qty: q, lineTotal });
+      });
+
+      const tier = DELIVERY_TIERS.find((t) => t.id === state.deliveryTierId) || DELIVERY_TIERS[0];
+      const deliveryFee = totalItems > 0 ? tier.fee : 0;
+      const optionalTip = totalItems > 0 ? Number(state.optionalTip) || 0 : 0;
+      const checkoutDonationAmount =
+        state.checkoutDonation === null || state.checkoutDonation === undefined
+          ? 0
+          : Math.max(0, Number(state.checkoutDonation) || 0);
+
+      const taxableBase = wholesaleSubtotal + deliveryFee + optionalTip + checkoutDonationAmount;
+      const mdrRate = state.paymentMethod === 'card' ? 0.02 : 0;
+      const mdrFee = Math.round(taxableBase * mdrRate * 100) / 100;
+      const platformFee = 0;
+      const productMarkup = 0;
+      const grandTotal = taxableBase + mdrFee + platformFee;
+
+      return {
+        lines,
+        wholesaleSubtotal,
+        deliveryFee,
+        optionalTip,
+        checkoutDonationAmount,
+        mdrFee,
+        mdrRate,
+        platformFee,
+        productMarkup,
+        grandTotal,
+        totalItems,
+        totalWeightKg,
+        tier,
+        donationChosen: state.checkoutDonation !== null && state.checkoutDonation !== undefined,
+      };
+    }
+
+    // ---------- NAV / SHELL ----------
+    function switchTab(tab) {
+      state.activeTab = tab;
+      ['storefront', 'checkout', 'about'].forEach((id) => {
+        const view = document.getElementById('view-' + id);
+        if (view) view.classList.toggle('hidden', id !== tab);
+        const nav = document.getElementById('nav-' + id);
+        if (nav) {
+          const on = id === tab;
+          nav.className = on
+            ? 'nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-ink text-paper' +
+              (id === 'about' ? ' flex items-center gap-1.5' : '')
+            : 'nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-ink transition-all' +
+              (id === 'about' ? ' flex items-center gap-1.5' : '');
+          if (id === 'about' && !on) {
+            nav.innerHTML =
+              '<span>About, Ledger & Seed / Donate</span><span class="w-2 h-2 rounded-full bg-emeraldTrust"></span>';
+          } else if (id === 'about' && on) {
+            nav.innerHTML =
+              '<span>About, Ledger & Seed / Donate</span><span class="w-2 h-2 rounded-full bg-emerald-300"></span>';
+          }
+        }
+        const mnav = document.getElementById('m-nav-' + id);
+        if (mnav) {
+          mnav.className =
+            id === tab
+              ? 'm-nav-btn flex-1 whitespace-nowrap px-3 py-2 rounded-lg text-xs font-bold bg-ink text-paper text-center'
+              : 'm-nav-btn flex-1 whitespace-nowrap px-3 py-2 rounded-lg text-xs font-bold bg-white border border-ink text-ink text-center';
+        }
+      });
+      if (tab === 'checkout') renderDedicatedCheckout();
+      if (tab === 'about') renderPublicDonationTransparency();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleCartDrawer(open) {
+      const drawer = document.getElementById('cart-drawer');
+      const backdrop = document.getElementById('cart-drawer-backdrop');
+      if (!drawer || !backdrop) return;
+      if (open) {
+        renderCartDrawer();
+        drawer.classList.remove('translate-x-full');
+        backdrop.classList.remove('hidden');
+      } else {
+        drawer.classList.add('translate-x-full');
+        backdrop.classList.add('hidden');
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        toggleCartDrawer(false);
+        closeInspectModal();
+      }
+    });
+
+    // ---------- CATALOG ----------
+    function handleSearch(q) {
+      state.searchQuery = (q || '').trim().toLowerCase();
+      renderProducts();
+    }
+
+    function setCategory(cat) {
+      state.selectedCategory = cat;
+      renderCategories();
+      renderProducts();
+    }
+
+    function renderCategories() {
+      const cats = ['All', ...Array.from(new Set(PRODUCTS.map((p) => p.category)))];
+      const el = document.getElementById('category-filters');
+      if (!el) return;
+      el.innerHTML = cats
+        .map((cat) => {
+          const on = state.selectedCategory === cat;
+          return `<button type="button" onclick="setCategory('${cat.replace(/'/g, "\\'")}')" class="whitespace-nowrap px-3.5 py-2 rounded-xl text-xs font-bold border border-ink ${
+            on ? 'bg-ink text-paper' : 'bg-white text-ink hover:bg-slate-100'
+          }">${cat}</button>`;
+        })
+        .join('');
+    }
+
+    function filteredProducts() {
+      return PRODUCTS.filter((p) => {
+        if (state.selectedCategory !== 'All' && p.category !== state.selectedCategory) return false;
+        if (!state.searchQuery) return true;
+        const hay = (p.name + ' ' + p.category + ' ' + p.packSize + ' ' + p.wholesaler).toLowerCase();
+        return hay.includes(state.searchQuery);
+      });
+    }
+
+    function savingsPct(p) {
+      if (!p.mrp) return 0;
+      return Math.round(((p.mrp - p.wholesalePrice) / p.mrp) * 100);
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('product-grid');
+      if (!grid) return;
+      const list = filteredProducts();
+      if (!list.length) {
+        grid.innerHTML =
+          '<div class="col-span-full bg-white border border-ink rounded-xl p-8 text-center text-sm text-slate-600">No staples match that filter. Try another search.</div>';
+        return;
+      }
+      grid.innerHTML = list
+        .map((p) => {
+          const qty = state.cart[p.id] || 0;
+          const save = savingsPct(p);
+          return `
+          <article class="bg-white border border-ink rounded-2xl p-4 ledger-shadow-sm flex flex-col gap-3">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <div class="font-mono-num text-[10px] font-bold uppercase text-emeraldTrust">${p.category}</div>
+                <h3 class="font-extrabold text-sm leading-snug mt-0.5">${p.name}</h3>
+                <p class="font-mono-num text-[11px] text-slate-500 mt-0.5">${p.packSize}</p>
+              </div>
+              <span class="font-mono-num text-[10px] font-bold px-2 py-1 rounded bg-emerald-50 text-emeraldTrust border border-emeraldTrust whitespace-nowrap">-${save}% vs MRP</span>
+            </div>
+            <div class="bg-paper border border-slate-300 rounded-xl p-3 space-y-1">
+              <div class="flex justify-between items-baseline">
+                <span class="font-mono-num text-[10px] uppercase text-slate-500">Wholesale Invoice</span>
+                <span class="font-mono-num font-extrabold text-base">${formatINR(p.wholesalePrice)}</span>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-500">
+                <span>MRP ${formatINR(p.mrp)}</span>
+                <span class="text-emeraldTrust font-bold">Markup ₹0.00</span>
+              </div>
+              <p class="text-[10px] text-slate-500 leading-snug pt-1 border-t border-dashed border-slate-300">${p.wholesaler}</p>
+            </div>
+            <div class="mt-auto flex items-center gap-2">
+              <button type="button" onclick="openInspectModal('${p.id}')" class="flex-1 py-2 rounded-xl border border-ink text-[11px] font-bold hover:bg-slate-100">Inspect Invoice</button>
+              ${
+                qty > 0
+                  ? `<div class="flex items-center gap-1.5 bg-paper border border-ink rounded-xl px-2 py-1">
+                      <button type="button" onclick="changeQty('${p.id}', -1)" class="w-7 h-7 rounded-lg bg-white border border-ink font-bold">−</button>
+                      <span class="font-mono-num font-bold w-5 text-center text-sm">${qty}</span>
+                      <button type="button" onclick="changeQty('${p.id}', 1)" class="w-7 h-7 rounded-lg bg-ink text-paper font-bold">+</button>
+                    </div>`
+                  : `<button type="button" onclick="changeQty('${p.id}', 1)" class="flex-1 py-2 rounded-xl bg-ink text-paper text-[11px] font-bold hover:bg-slate-800">+ Add at Wholesale</button>`
+              }
+            </div>
+          </article>`;
+        })
+        .join('');
+    }
+
+    function changeQty(id, delta) {
+      const next = Math.max(0, (state.cart[id] || 0) + delta);
+      if (next === 0) delete state.cart[id];
+      else state.cart[id] = next;
+      state.lastOrderReceipt = null;
+      syncAllUI();
+    }
+
+    function openInspectModal(id) {
+      const p = getProduct(id);
+      if (!p) return;
+      document.getElementById('modal-prod-name').textContent = p.name;
+      document.getElementById('modal-prod-source').textContent = p.wholesaler;
+      document.getElementById('modal-invoice-details').innerHTML = `
+        <div class="flex justify-between"><span>Invoice Batch</span><span class="font-bold">${p.invoiceBatch}</span></div>
+        <div class="flex justify-between"><span>Pack</span><span class="font-bold">${p.packSize}</span></div>
+        <div class="flex justify-between"><span>Wholesaler Base</span><span class="font-bold text-emeraldTrust">${formatINR(p.wholesalePrice)}</span></div>
+        <div class="flex justify-between"><span>Printed MRP</span><span class="font-bold">${formatINR(p.mrp)}</span></div>
+        <div class="flex justify-between"><span>zeroprofit Markup</span><span class="font-bold text-emeraldTrust">₹0.00 (0.00%)</span></div>
+        <div class="flex justify-between"><span>GST Note</span><span class="font-bold text-right max-w-[55%]">${p.gstIncluded}</span></div>
+        <div class="pt-2 border-t border-dashed border-slate-400 flex justify-between text-[11px]">
+          <span>YOU PAY (ITEM)</span><span class="font-extrabold">${formatINR(p.wholesalePrice)}</span>
+        </div>`;
+      const addBtn = document.getElementById('modal-add-btn');
+      addBtn.onclick = () => {
+        changeQty(id, 1);
+        closeInspectModal();
+      };
+      document.getElementById('inspect-modal-backdrop').classList.remove('hidden');
+    }
+
+    function closeInspectModal() {
+      const el = document.getElementById('inspect-modal-backdrop');
+      if (el) el.classList.add('hidden');
+    }
+
+    // ---------- CART DRAWER ----------
+    function renderCartDrawer() {
+      const body = document.getElementById('drawer-body');
+      const footer = document.getElementById('drawer-footer');
+      const ledger = calculateLedger();
+      if (!body || !footer) return;
+
+      if (!ledger.lines.length) {
+        body.innerHTML =
+          '<div class="text-sm text-slate-600 border border-dashed border-slate-400 rounded-xl p-6 text-center">Basket empty. Add wholesale staples from the storefront.</div>';
+        footer.innerHTML = `<button type="button" onclick="toggleCartDrawer(false); switchTab('storefront')" class="w-full py-3 rounded-xl bg-ink text-paper font-bold text-sm">Browse Catalog</button>`;
+        return;
+      }
+
+      body.innerHTML = `
+        <div class="space-y-3">
+          ${ledger.lines
+            .map(
+              ({ product: p, qty, lineTotal }) => `
+            <div class="border border-ink rounded-xl p-3 bg-paper space-y-2">
+              <div class="flex justify-between gap-2">
+                <div>
+                  <div class="font-bold text-sm">${p.name}</div>
+                  <div class="font-mono-num text-[10px] text-slate-500">${p.packSize} · ${formatINR(p.wholesalePrice)} ea</div>
+                </div>
+                <div class="font-mono-num font-extrabold text-sm">${formatINR(lineTotal)}</div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <button type="button" onclick="changeQty('${p.id}', -1)" class="w-7 h-7 rounded-lg bg-white border border-ink font-bold">−</button>
+                  <span class="font-mono-num font-bold w-5 text-center">${qty}</span>
+                  <button type="button" onclick="changeQty('${p.id}', 1)" class="w-7 h-7 rounded-lg bg-ink text-paper font-bold">+</button>
+                </div>
+                <span class="font-mono-num text-[10px] text-emeraldTrust font-bold">0% MARKUP</span>
+              </div>
+            </div>`
+            )
+            .join('')}
+        </div>
+        <div class="bg-white border border-ink rounded-xl p-4 font-mono-num text-xs space-y-1.5">
+          <div class="flex justify-between"><span>Wholesaler Subtotal</span><strong>${formatINR(ledger.wholesaleSubtotal)}</strong></div>
+          <div class="flex justify-between text-amber-700"><span>Delivery (est. ${ledger.tier.label})</span><strong>${formatINR(ledger.deliveryFee)}</strong></div>
+          <div class="flex justify-between text-emeraldTrust"><span>Platform Fee</span><strong>₹0.00</strong></div>
+          <div class="flex justify-between border-t border-ink pt-2 text-sm"><span>Running Total*</span><strong>${formatINR(
+            ledger.wholesaleSubtotal + ledger.deliveryFee
+          )}</strong></div>
+          <p class="text-[10px] text-slate-500 pt-1">*Final MDR, tip & donation chosen on Split-Ledger Checkout.</p>
+        </div>`;
+
+      footer.innerHTML = `
+        <button type="button" onclick="toggleCartDrawer(false); switchTab('checkout')" class="w-full py-3.5 rounded-xl bg-emeraldTrust text-white font-bold text-sm hover:bg-emerald-700">
+          Open Split-Ledger Checkout →
+        </button>
+        <button type="button" onclick="toggleCartDrawer(false); switchTab('storefront')" class="w-full py-2.5 rounded-xl border border-ink text-xs font-bold hover:bg-slate-100">
+          Keep Shopping
+        </button>`;
+    }
+
+    // ---------- CHECKOUT CONTROLS ----------
+    function setDeliveryTier(id) {
+      state.deliveryTierId = id;
+      state.lastOrderReceipt = null;
+      syncAllUI();
+    }
+
+    function setPaymentMethod(method) {
+      state.paymentMethod = method;
+      state.lastOrderReceipt = null;
+      syncAllUI();
+    }
+
+    function setCheckoutDonation(amount) {
+      state.checkoutDonation = Math.max(0, Number(amount));
+      state.donationValidationError = false;
+      state.lastOrderReceipt = null;
+      syncAllUI();
+    }
+
+    function setOptionalTip(amount) {
+      state.optionalTip = Math.max(0, Number(amount) || 0);
+      state.lastOrderReceipt = null;
+      syncAllUI();
+    }
+
+    function setViewerIdentity(rawName) {
+      const cleaned = (rawName || '').trim();
+      state.currentViewerFormatted = cleaned ? formatDonorName(cleaned) : '';
+      const viewerInput = document.getElementById('viewer-identity-input');
+      if (viewerInput && document.activeElement !== viewerInput) {
+        viewerInput.value = cleaned;
+      }
+      renderPublicDonationTransparency();
+    }
+
+    function applyViewerIdentityInput() {
+      const inputEl = document.getElementById('viewer-identity-input');
+      if (!inputEl) return;
+      setViewerIdentity(inputEl.value);
+    }
+
+    function clearViewerIdentity() {
+      state.currentViewerFormatted = '';
+      const viewerInput = document.getElementById('viewer-identity-input');
+      if (viewerInput) viewerInput.value = '';
+      renderPublicDonationTransparency();
+    }
+
+    function isCurrentViewer(formattedDonorTag) {
+      if (!state.currentViewerFormatted || !formattedDonorTag) return false;
+      return state.currentViewerFormatted.trim().toLowerCase() === formattedDonorTag.trim().toLowerCase();
+    }
+
+    function updateCheckoutDonorPreview(val) {
+      state.checkoutDonorName = val;
+      if (val && val.trim()) {
+        state.currentViewerFormatted = formatDonorName(val);
+        const viewerInput = document.getElementById('viewer-identity-input');
+        if (viewerInput) viewerInput.value = val.trim();
+      }
+      const previewEl = document.getElementById('checkout-donor-preview');
+      if (previewEl) {
+        previewEl.textContent = `Public Ledger Tag: ${formatDonorName(val)} (you)`;
+      }
+      renderPublicDonationTransparency();
+    }
+
+    function updateDirectDonorPreview(val) {
+      if (val && val.trim()) {
+        state.currentViewerFormatted = formatDonorName(val);
+        const viewerInput = document.getElementById('viewer-identity-input');
+        if (viewerInput) viewerInput.value = val.trim();
+      }
+      const previewEl = document.getElementById('direct-donor-preview');
+      if (previewEl) {
+        previewEl.textContent = `Published publicly as: ${formatDonorName(val)} (you)`;
+      }
+      renderPublicDonationTransparency();
+    }
+
+    function renderDedicatedCheckout() {
+      const ledger = calculateLedger();
+      const itemsList = document.getElementById('checkout-items-list');
+      const countEl = document.getElementById('checkout-item-count');
+      if (countEl) countEl.textContent = `${ledger.totalItems} ITEM${ledger.totalItems === 1 ? '' : 'S'}`;
+
+      if (itemsList) {
+        if (!ledger.lines.length) {
+          itemsList.innerHTML =
+            '<div class="py-6 text-center text-sm text-slate-600">No items yet. <button type="button" class="underline font-bold" onclick="switchTab(\'storefront\')">Add wholesale staples</button>.</div>';
+        } else {
+          itemsList.innerHTML = ledger.lines
+            .map(
+              ({ product: p, qty, lineTotal }) => `
+            <div class="py-3 flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <div class="font-bold text-sm">${p.name}</div>
+                <div class="font-mono-num text-[11px] text-slate-500">${qty} × ${formatINR(p.wholesalePrice)} · ${p.packSize}</div>
+                <div class="font-mono-num text-[10px] text-emeraldTrust font-bold mt-0.5">100% → ${p.wholesaler.split(',')[0]}</div>
+              </div>
+              <div class="flex flex-col items-end gap-1">
+                <div class="font-mono-num font-extrabold">${formatINR(lineTotal)}</div>
+                <div class="flex items-center gap-1">
+                  <button type="button" onclick="changeQty('${p.id}', -1)" class="w-6 h-6 rounded border border-ink text-xs font-bold">−</button>
+                  <button type="button" onclick="changeQty('${p.id}', 1)" class="w-6 h-6 rounded bg-ink text-paper text-xs font-bold">+</button>
+                </div>
+              </div>
+            </div>`
+            )
+            .join('');
+        }
+      }
+
+      const distGrid = document.getElementById('distance-selector-grid');
+      if (distGrid) {
+        distGrid.innerHTML = DELIVERY_TIERS.map((t) => {
+          const on = state.deliveryTierId === t.id;
+          return `<button type="button" onclick="setDeliveryTier('${t.id}')" class="text-left p-3 rounded-xl border ${
+            on ? 'border-2 border-amber-500 bg-amber-50' : 'border-ink bg-white hover:bg-slate-50'
+          }">
+            <div class="font-bold text-xs">${t.label}</div>
+            <div class="font-mono-num text-[10px] text-slate-500 mt-0.5">${t.partner}</div>
+            <div class="font-mono-num font-extrabold text-sm mt-1">${formatINR(t.fee)}</div>
+          </button>`;
+        }).join('');
+      }
+
+      const payGrid = document.getElementById('payment-method-grid');
+      if (payGrid) {
+        const upiOn = state.paymentMethod === 'upi';
+        const cardOn = state.paymentMethod === 'card';
+        payGrid.innerHTML = `
+          <button type="button" onclick="setPaymentMethod('upi')" class="text-left p-3.5 rounded-xl border ${
+            upiOn ? 'border-2 border-blue-600 bg-blue-50' : 'border-ink bg-white hover:bg-slate-50'
+          }">
+            <div class="font-bold text-sm">UPI / BHIM</div>
+            <div class="font-mono-num text-[11px] text-emeraldTrust font-bold mt-1">MDR 0.00% · ₹0.00 fee</div>
+          </button>
+          <button type="button" onclick="setPaymentMethod('card')" class="text-left p-3.5 rounded-xl border ${
+            cardOn ? 'border-2 border-blue-600 bg-blue-50' : 'border-ink bg-white hover:bg-slate-50'
+          }">
+            <div class="font-bold text-sm">Credit / Debit Card</div>
+            <div class="font-mono-num text-[11px] text-blue-700 font-bold mt-1">MDR 2.00% pass-through</div>
+          </button>`;
+      }
+
+      const donRow = document.getElementById('checkout-donation-row');
+      if (donRow) {
+        const opts = [0, 5, 10, 20, 30, 50];
+        donRow.innerHTML = opts
+          .map((amt) => {
+            const on = state.checkoutDonation === amt;
+            return `<button type="button" onclick="setCheckoutDonation(${amt})" class="px-3.5 py-2 rounded-xl border font-mono-num font-bold text-sm ${
+              on ? 'border-2 border-emeraldTrust bg-emerald-50 text-emeraldTrust' : 'border-ink bg-white hover:bg-slate-100'
+            }">₹${amt}</button>`;
+          })
+          .join('');
+      }
+
+      const badge = document.getElementById('donation-status-badge');
+      const hint = document.getElementById('donation-validation-hint');
+      const donCard = document.getElementById('donation-section-card');
+      if (badge) {
+        if (state.checkoutDonation === null) {
+          badge.textContent = 'REQUIRED CHOICE — SELECT ANY ONE (₹0 TO ₹50)';
+          badge.className =
+            'font-mono-num text-[11px] font-bold px-2.5 py-1 rounded bg-amber-100 text-amber-900 border border-amber-500';
+        } else if (state.checkoutDonation === 0) {
+          badge.textContent = 'CHOICE LOGGED — ₹0 (NO DONATION)';
+          badge.className =
+            'font-mono-num text-[11px] font-bold px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-400';
+        } else {
+          badge.textContent = `CHOICE LOGGED — ₹${state.checkoutDonation} TO RELIEF LEDGER`;
+          badge.className =
+            'font-mono-num text-[11px] font-bold px-2.5 py-1 rounded bg-emerald-100 text-emeraldTrust border border-emeraldTrust';
+        }
+      }
+      if (hint) hint.classList.toggle('hidden', !state.donationValidationError);
+      if (donCard) {
+        donCard.className =
+          'bg-paper border-2 rounded-xl p-5 space-y-3 transition-all ' +
+          (state.donationValidationError ? 'border-amber-500 ring-2 ring-amber-300' : 'border-ink');
+      }
+
+      const tipRow = document.getElementById('tip-selector-row');
+      if (tipRow) {
+        const tips = [0, 10, 20, 40];
+        tipRow.innerHTML = tips
+          .map((amt) => {
+            const on = state.optionalTip === amt;
+            return `<button type="button" onclick="setOptionalTip(${amt})" class="px-3.5 py-2 rounded-xl border font-mono-num font-bold text-sm ${
+              on ? 'border-2 border-amber-500 bg-amber-50 text-amber-900' : 'border-ink bg-white hover:bg-slate-100'
+            }">${amt === 0 ? '₹0 (Default)' : '₹' + amt}</button>`;
+          })
+          .join('');
+      }
+
+      const receipt = document.getElementById('checkout-receipt-box');
+      if (!receipt) return;
+
+      if (state.lastOrderReceipt) {
+        const r = state.lastOrderReceipt;
+        receipt.innerHTML = `
+          <div class="space-y-3">
+            <div class="font-mono-num text-[10px] font-bold uppercase text-emeraldTrust">SPLIT SETTLEMENT CONFIRMED</div>
+            <h3 class="font-extrabold text-xl">Order ${r.orderId}</h3>
+            <p class="text-xs text-slate-600">UPI/Card rails simulated. Every rupee routed per open ledger below.</p>
+            <div class="bg-paper border border-ink rounded-xl p-4 font-mono-num text-xs space-y-1.5">
+              <div class="flex justify-between"><span>→ Wholesalers</span><strong>${formatINR(r.wholesaleSubtotal)}</strong></div>
+              <div class="flex justify-between"><span>→ Delivery Partner</span><strong>${formatINR(r.deliveryFee + r.optionalTip)}</strong></div>
+              <div class="flex justify-between"><span>→ Gateway MDR</span><strong>${formatINR(r.mdrFee)}</strong></div>
+              <div class="flex justify-between"><span>→ Community Ledger</span><strong>${formatINR(r.checkoutDonationAmount)}</strong></div>
+              <div class="flex justify-between text-emeraldTrust"><span>→ zeroprofit.store</span><strong>₹0.00</strong></div>
+              <div class="flex justify-between border-t border-ink pt-2 text-sm"><span>Total Charged</span><strong>${formatINR(r.grandTotal)}</strong></div>
+            </div>
+            <button type="button" onclick="state.lastOrderReceipt=null; switchTab('storefront'); syncAllUI();" class="w-full py-3 rounded-xl bg-ink text-paper font-bold text-sm">Back to Storefront</button>
+            ${
+              r.checkoutDonationAmount > 0
+                ? `<button type="button" onclick="switchTab('about'); document.getElementById('public-donor-ledger-section')?.scrollIntoView({behavior:'smooth'})" class="w-full py-2.5 rounded-xl border border-emeraldTrust text-emeraldTrust font-bold text-xs">View Your Public Ledger Entry →</button>`
+                : ''
+            }
+          </div>`;
+        return;
+      }
+
+      const w = ledger.wholesaleSubtotal;
+      const d = ledger.deliveryFee;
+      const tip = ledger.optionalTip;
+      const don = ledger.checkoutDonationAmount;
+      const mdr = ledger.mdrFee;
+      const total = Math.max(ledger.grandTotal, 0.01);
+      const pct = (n) => Math.max(0, Math.round((n / total) * 1000) / 10);
+
+      receipt.innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <div class="font-mono-num text-[10px] font-bold uppercase text-emeraldTrust">LIVE SPLIT-LEDGER RECEIPT</div>
+            <h3 class="font-extrabold text-xl mt-1">Where Every Rupee Goes</h3>
+          </div>
+          <div class="w-full h-3.5 rounded-full overflow-hidden flex border border-ink bg-slate-100">
+            <div style="width:${pct(w)}%" class="bg-ink h-full" title="Wholesaler"></div>
+            <div style="width:${pct(d)}%" class="bg-amber-400 h-full" title="Delivery"></div>
+            <div style="width:${pct(tip)}%" class="bg-amber-600 h-full" title="Tip"></div>
+            <div style="width:${pct(don)}%" class="bg-emeraldTrust h-full" title="Donation"></div>
+            <div style="width:${pct(mdr)}%" class="bg-blue-500 h-full" title="MDR"></div>
+          </div>
+          <div class="font-mono-num text-xs space-y-2">
+            <div class="flex justify-between"><span>1. Wholesaler Invoice</span><strong>${formatINR(w)}</strong></div>
+            <div class="flex justify-between text-emeraldTrust"><span>2. Product Markup</span><strong>₹0.00</strong></div>
+            <div class="flex justify-between text-emeraldTrust"><span>3. Platform Fee</span><strong>₹0.00</strong></div>
+            <div class="flex justify-between text-amber-700"><span>4. Delivery (${ledger.tier.partner.split('/')[0].trim()})</span><strong>${formatINR(d)}</strong></div>
+            <div class="flex justify-between text-amber-800"><span>5. Rider Tip</span><strong>${formatINR(tip)}</strong></div>
+            <div class="flex justify-between text-blue-700"><span>6. Gateway MDR (${(ledger.mdrRate * 100).toFixed(2)}%)</span><strong>${formatINR(mdr)}</strong></div>
+            <div class="flex justify-between"><span>7. Community Donation</span><strong>${
+              ledger.donationChosen ? formatINR(don) : '— choose —'
+            }</strong></div>
+            <div class="flex justify-between border-t-2 border-ink pt-2 text-sm"><span>Grand Total</span><strong class="text-lg">${formatINR(
+              ledger.grandTotal
+            )}</strong></div>
+          </div>
+          <button type="button" onclick="authorizeSplitLedgerCheckout()" ${
+            ledger.totalItems === 0 ? 'disabled' : ''
+          } class="w-full py-3.5 rounded-xl bg-ink text-paper font-bold text-sm hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed">
+            Authorize Split Settlement • Pay ${formatINR(ledger.grandTotal)}
+          </button>
+          <p class="font-mono-num text-[10px] text-slate-500 text-center">Demo only — no real charge. Donation choice required (₹0 allowed).</p>
+        </div>`;
+    }
+
+    function authorizeSplitLedgerCheckout() {
+      const ledger = calculateLedger();
+      if (ledger.totalItems === 0) {
+        switchTab('storefront');
+        return;
+      }
+      if (state.checkoutDonation === null || state.checkoutDonation === undefined) {
+        state.donationValidationError = true;
+        renderDedicatedCheckout();
+        document.getElementById('donation-section-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      const rand = () => Math.floor(100000 + Math.random() * 900000);
+      const formattedDonor = formatDonorName(state.checkoutDonorName);
+      if (state.checkoutDonorName && state.checkoutDonorName.trim()) {
+        state.currentViewerFormatted = formattedDonor;
+        const viewerInput = document.getElementById('viewer-identity-input');
+        if (viewerInput) viewerInput.value = state.checkoutDonorName.trim();
+      }
+
+      const orderId = 'ZP-' + rand();
+      const nowStr = new Date()
+        .toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })
+        .toUpperCase();
+
+      if (ledger.checkoutDonationAmount > 0) {
+        const donId = 'DON-' + rand();
+        state.donations.unshift({
+          id: donId,
+          donor: formattedDonor,
+          amount: ledger.checkoutDonationAmount,
+          date: '24 Nov 2026',
+          time: nowStr,
+          isToday: true,
+          isThisWeek: true,
+          source: 'Checkout',
+          purpose: 'Webstore & Needy Relief',
+        });
+        state.communityDonationsTotal += ledger.checkoutDonationAmount;
+      }
+
+      state.lastOrderReceipt = {
+        orderId,
+        wholesaleSubtotal: ledger.wholesaleSubtotal,
+        deliveryFee: ledger.deliveryFee,
+        optionalTip: ledger.optionalTip,
+        checkoutDonationAmount: ledger.checkoutDonationAmount,
+        mdrFee: ledger.mdrFee,
+        grandTotal: ledger.grandTotal,
+        donor: formattedDonor,
+      };
+      state.cart = {};
+      state.checkoutDonation = null;
+      state.optionalTip = 0;
+      state.donationValidationError = false;
+      syncAllUI();
+    }
+
+    // ---------- ABOUT: INVEST / DONATE ----------
+    function handleInvestorSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('inv-name').value.trim();
+      const firm = document.getElementById('inv-firm').value.trim();
+      const email = document.getElementById('inv-email').value.trim();
+      const ticket = document.getElementById('inv-ticket').value;
+      const note = document.getElementById('inv-note').value.trim();
+      const ticketLabel =
+        ticket === '5' ? '₹5–10L' : ticket === '35' ? '₹25L+' : '₹10–25L';
+
+      const box = document.getElementById('investor-confirmation');
+      if (box) {
+        box.classList.remove('hidden');
+        box.innerHTML = `
+          <div class="font-mono-num text-[10px] font-bold uppercase text-emeraldTrust">INTEREST LOGGED (DEMO)</div>
+          <p class="text-sm font-semibold text-ink">Thanks ${name}. Pitch deck request queued for <strong>${firm}</strong> (${email}).</p>
+          <p class="font-mono-num text-xs text-slate-600">Indicative ticket: ${ticketLabel}${
+          note ? ' · Note saved' : ''
+        }. Soft-commit board unchanged until diligence.</p>`;
+      }
+      const pledges = document.getElementById('ledger-investor-pledges');
+      if (pledges) {
+        pledges.textContent = `₹${state.investorSoftCommittedLakhs}L Soft-Committed • 18 Mo Runway · +1 interest`;
+      }
+      event.target.reset();
+    }
+
+    function selectDonationAmount(amount) {
+      state.selectedDonationPreset = amount;
+      const input = document.getElementById('don-amount-input');
+      if (input) input.value = amount;
+      updateDonationImpact(amount);
+      document.querySelectorAll('.don-preset-btn').forEach((btn) => {
+        btn.className =
+          'don-preset-btn py-2.5 rounded-xl border border-ink font-mono-num font-bold text-sm bg-paper hover:bg-slate-100';
+      });
+      const active = document.getElementById('don-btn-' + amount);
+      if (active) {
+        active.className =
+          'don-preset-btn py-2.5 rounded-xl border-2 border-emeraldTrust font-mono-num font-bold text-sm bg-emerald-50 text-emeraldTrust';
+      }
+      const custom = document.getElementById('don-btn-custom');
+      if (custom) {
+        custom.className =
+          'don-preset-btn py-2.5 rounded-xl border border-ink font-mono-num font-bold text-sm bg-paper hover:bg-slate-100';
+      }
+    }
+
+    function focusCustomDonation() {
+      document.querySelectorAll('.don-preset-btn').forEach((btn) => {
+        btn.className =
+          'don-preset-btn py-2.5 rounded-xl border border-ink font-mono-num font-bold text-sm bg-paper hover:bg-slate-100';
+      });
+      const custom = document.getElementById('don-btn-custom');
+      if (custom) {
+        custom.className =
+          'don-preset-btn py-2.5 rounded-xl border-2 border-emeraldTrust font-mono-num font-bold text-sm bg-emerald-50 text-emeraldTrust';
+      }
+      const input = document.getElementById('don-amount-input');
+      if (input) {
+        input.focus();
+        input.select();
+      }
+    }
+
+    function updateDonationImpact(val) {
+      const amt = Math.max(0, Number(val) || 0);
+      state.selectedDonationPreset = amt;
+      const el = document.getElementById('donation-impact-text');
+      if (!el) return;
+      const orders = Math.max(1, Math.round(amt / 2));
+      el.textContent = `₹${amt.toLocaleString('en-IN')} covers server compute & logistics API routing for ~${orders} zero-profit household orders.`;
+    }
+
+    function handleDonationSubmit() {
+      const amt = Math.max(10, Number(document.getElementById('don-amount-input').value) || 0);
+      const rawName = document.getElementById('don-name-input').value.trim();
+      const formattedDonor = formatDonorName(rawName);
+      if (rawName) {
+        state.currentViewerFormatted = formattedDonor;
+        const viewerInput = document.getElementById('viewer-identity-input');
+        if (viewerInput) viewerInput.value = rawName;
+      }
+      const nowStr = new Date()
+        .toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })
+        .toUpperCase();
+      const randNum = Math.floor(100000 + Math.random() * 900000);
+      const donId = 'DON-' + randNum;
+
+      state.donations.unshift({
+        id: donId,
+        donor: formattedDonor,
+        amount: amt,
+        date: '24 Nov 2026',
+        time: nowStr,
+        isToday: true,
+        isThisWeek: true,
+        source: 'Direct Patron',
+        purpose: 'Webstore Ops & Servers',
+      });
+      state.communityDonationsTotal += amt;
+
+      const box = document.getElementById('donation-receipt-box');
+      if (box) {
+        box.classList.remove('hidden');
+        box.innerHTML = `
+          <div class="flex justify-between border-b border-dashed border-slate-400 pb-2">
+            <span class="font-bold uppercase">UPI Patron Receipt (Simulated)</span>
+            <span class="text-emeraldTrust font-bold">SUCCESS</span>
+          </div>
+          <div class="flex justify-between"><span>Receipt ID</span><strong>${donId}</strong></div>
+          <div class="flex justify-between"><span>Public Tag</span><strong>${formattedDonor}</strong></div>
+          <div class="flex justify-between"><span>Amount</span><strong class="text-emeraldTrust">${formatINR(amt)}</strong></div>
+          <div class="flex justify-between"><span>Timestamp</span><strong>24 Nov 2026 • ${nowStr}</strong></div>
+          <p class="text-[10px] text-slate-500 pt-1">Logged on public donor ledger. No equity issued.</p>`;
+      }
+      renderPublicDonationTransparency();
+      document.getElementById('public-donor-ledger-section')?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function setDonationLedgerFilter(filter) {
+      state.donationLedgerFilter = filter;
+      renderPublicDonationTransparency();
+    }
+
+    // RENDER TOP 10 DONORS OF THE DAY, TOP 10 DONORS OF THE WEEK & ALL DONATIONS LOG
+    function renderPublicDonationTransparency() {
+      const totalEl = document.getElementById('ledger-donation-total');
+      if (totalEl) {
+        totalEl.textContent = '₹' + state.communityDonationsTotal.toLocaleString('en-IN');
+      }
+
+      const summaryStatsEl = document.getElementById('public-ledger-summary-stats');
+      if (summaryStatsEl) {
+        summaryStatsEl.textContent = `${state.donations.length} Donations • ₹${state.communityDonationsTotal.toLocaleString('en-IN')} Logged`;
+      }
+
+      const activeViewerPill = document.getElementById('active-viewer-pill');
+      if (activeViewerPill) {
+        if (state.currentViewerFormatted) {
+          activeViewerPill.innerHTML = `${state.currentViewerFormatted} <span class="ml-1 px-1.5 py-0.5 rounded bg-emerald-100 text-emeraldTrust text-[10px] font-extrabold border border-emeraldTrust">(you)</span>`;
+        } else {
+          activeViewerPill.innerHTML = `<span class="text-slate-500 font-normal">Anonymous Visitor (no highlight)</span>`;
+        }
+      }
+
+      const buildTop10 = (predicate) => {
+        const map = new Map();
+        state.donations.filter(predicate).forEach((entry) => {
+          const existing = map.get(entry.donor);
+          if (existing) {
+            existing.total += entry.amount;
+            existing.count += 1;
+          } else {
+            map.set(entry.donor, {
+              donor: entry.donor,
+              total: entry.amount,
+              count: 1,
+              latestDate: entry.date,
+              latestTime: entry.time,
+            });
+          }
+        });
+        return Array.from(map.values())
+          .sort((a, b) => b.total - a.total)
+          .slice(0, 10);
+      };
+
+      const renderRankBadge = (idx) => {
+        if (idx === 0)
+          return `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-400 text-ink font-extrabold text-[11px] border border-ink">#1</span>`;
+        if (idx === 1)
+          return `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-300 text-ink font-extrabold text-[11px] border border-ink">#2</span>`;
+        if (idx === 2)
+          return `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-700 text-white font-extrabold text-[11px] border border-ink">#3</span>`;
+        return `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white text-slate-700 font-bold text-[11px] border border-slate-300">#${
+          idx + 1
+        }</span>`;
+      };
+
+      const renderYouTag = (isYou) =>
+        isYou
+          ? `<span class="ml-1.5 inline-flex items-center px-1.5 py-0.5 rounded bg-emeraldTrust text-white text-[10px] font-extrabold tracking-tight">(you)</span>`
+          : '';
+
+      const topDay = buildTop10((d) => d.isToday);
+      const dayYouIdx = topDay.findIndex((r) => isCurrentViewer(r.donor));
+      const dayRankBadge = document.getElementById('day-viewer-rank-badge');
+      if (dayRankBadge) {
+        if (dayYouIdx !== -1) {
+          dayRankBadge.classList.remove('hidden');
+          dayRankBadge.textContent = `Your Rank: #${dayYouIdx + 1} • ₹${topDay[dayYouIdx].total.toLocaleString('en-IN')}`;
+        } else {
+          dayRankBadge.classList.add('hidden');
+        }
+      }
+
+      const dayTbody = document.getElementById('top-donors-day-tbody');
+      if (dayTbody) {
+        dayTbody.innerHTML = topDay
+          .map((row, idx) => {
+            const isYou = isCurrentViewer(row.donor);
+            const rowClasses = isYou
+              ? 'bg-emerald-100/80 border-l-4 border-l-emeraldTrust font-semibold'
+              : idx < 3
+              ? 'bg-amber-50/40 hover:bg-white'
+              : 'hover:bg-white';
+            return `
+            <tr class="${rowClasses} transition-colors">
+              <td class="py-2.5 px-3.5">${renderRankBadge(idx)}</td>
+              <td class="py-2.5 px-3.5 font-bold text-ink">
+                <span>${row.donor}</span>${renderYouTag(isYou)}
+                ${row.count > 1 ? `<span class="ml-1 text-[10px] text-emeraldTrust">(${row.count}x)</span>` : ''}
+              </td>
+              <td class="py-2.5 px-3.5 text-right font-extrabold text-emeraldTrust">₹${row.total.toLocaleString('en-IN')}</td>
+              <td class="py-2.5 px-3.5 text-right text-[11px] text-slate-600">${row.latestDate} • ${row.latestTime}</td>
+            </tr>`;
+          })
+          .join('');
+      }
+
+      const topWeek = buildTop10((d) => d.isThisWeek);
+      const weekYouIdx = topWeek.findIndex((r) => isCurrentViewer(r.donor));
+      const weekRankBadge = document.getElementById('week-viewer-rank-badge');
+      if (weekRankBadge) {
+        if (weekYouIdx !== -1) {
+          weekRankBadge.classList.remove('hidden');
+          weekRankBadge.textContent = `Your Rank: #${weekYouIdx + 1} • ₹${topWeek[weekYouIdx].total.toLocaleString(
+            'en-IN'
+          )}`;
+        } else {
+          weekRankBadge.classList.add('hidden');
+        }
+      }
+
+      const weekTbody = document.getElementById('top-donors-week-tbody');
+      if (weekTbody) {
+        weekTbody.innerHTML = topWeek
+          .map((row, idx) => {
+            const isYou = isCurrentViewer(row.donor);
+            const rowClasses = isYou
+              ? 'bg-emerald-100/80 border-l-4 border-l-emeraldTrust font-semibold'
+              : idx < 3
+              ? 'bg-emerald-50/40 hover:bg-white'
+              : 'hover:bg-white';
+            return `
+            <tr class="${rowClasses} transition-colors">
+              <td class="py-2.5 px-3.5">${renderRankBadge(idx)}</td>
+              <td class="py-2.5 px-3.5 font-bold text-ink">
+                <span>${row.donor}</span>${renderYouTag(isYou)}
+                ${row.count > 1 ? `<span class="ml-1 text-[10px] text-emeraldTrust">(${row.count}x)</span>` : ''}
+              </td>
+              <td class="py-2.5 px-3.5 text-right font-extrabold text-emeraldTrust">₹${row.total.toLocaleString('en-IN')}</td>
+              <td class="py-2.5 px-3.5 text-right text-[11px] text-slate-600">${row.latestDate}</td>
+            </tr>`;
+          })
+          .join('');
+      }
+
+      // 3. Filter Pills for All Donations Log
+      const filters = [
+        { id: 'all', label: 'All' },
+        { id: 'today', label: 'Today' },
+        { id: 'week', label: 'This Week' },
+        { id: 'checkout', label: 'Checkout' },
+        { id: 'patron', label: 'Direct Patron' },
+      ];
+      const filterEl = document.getElementById('donation-ledger-filters');
+      if (filterEl) {
+        filterEl.innerHTML = filters
+          .map((f) => {
+            const on = state.donationLedgerFilter === f.id;
+            return `<button type="button" onclick="setDonationLedgerFilter('${f.id}')" class="px-2.5 py-1 rounded-lg font-mono-num text-[11px] font-bold border ${
+              on ? 'bg-ink text-paper border-ink' : 'bg-white text-ink border-ink hover:bg-slate-100'
+            }">${f.label}</button>`;
+          })
+          .join('');
+      }
+
+      let filteredDonations = [...state.donations];
+      if (state.donationLedgerFilter === 'today') filteredDonations = filteredDonations.filter((d) => d.isToday);
+      else if (state.donationLedgerFilter === 'week') filteredDonations = filteredDonations.filter((d) => d.isThisWeek);
+      else if (state.donationLedgerFilter === 'checkout')
+        filteredDonations = filteredDonations.filter((d) => d.source === 'Checkout');
+      else if (state.donationLedgerFilter === 'patron')
+        filteredDonations = filteredDonations.filter((d) => d.source === 'Direct Patron');
+
+      const allTbody = document.getElementById('all-donations-tbody');
+      if (allTbody) {
+        if (!filteredDonations.length) {
+          allTbody.innerHTML =
+            '<tr><td colspan="5" class="py-8 text-center text-slate-500">No donations match this filter.</td></tr>';
+        } else {
+          allTbody.innerHTML = filteredDonations
+            .map((d) => {
+              const isYou = isCurrentViewer(d.donor);
+              return `
+            <tr class="${isYou ? 'bg-emerald-100/70 border-l-4 border-l-emeraldTrust' : 'hover:bg-paper'} transition-colors">
+              <td class="py-3 px-4 font-bold text-ink">
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <span class="w-6 h-6 rounded-full ${
+                    isYou ? 'bg-emeraldTrust text-white' : 'bg-emerald-100 text-emeraldTrust'
+                  } border border-emeraldTrust flex items-center justify-center text-[10px] font-extrabold">
+                    ${d.donor.charAt(0)}
+                  </span>
+                  <span>${d.donor}</span>${renderYouTag(isYou)}
+                  <span class="text-[10px] text-slate-400 font-normal">${d.id}</span>
+                </div>
+              </td>
+              <td class="py-3 px-4 text-right font-extrabold text-emeraldTrust">₹${d.amount.toLocaleString('en-IN')}.00</td>
+              <td class="py-3 px-4 text-slate-700">${d.date} <span class="text-slate-400">• ${d.time}</span></td>
+              <td class="py-3 px-4">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${
+                  d.source === 'Checkout'
+                    ? 'bg-amber-50 text-amber-800 border-amber-300'
+                    : 'bg-emerald-50 text-emeraldTrust border-emeraldTrust'
+                }">
+                  ${d.source}
+                </span>
+              </td>
+              <td class="py-3 px-4 text-slate-600">${d.purpose}</td>
+            </tr>`;
+            })
+            .join('');
+        }
+      }
+    }
+
+    // SYNC HEADER BADGES & ACTIVE VIEWS
+    function syncAllUI() {
+      const ledger = calculateLedger();
+      document.getElementById('header-cart-badge').textContent = ledger.totalItems;
+      document.getElementById('header-cart-total').textContent = formatINR(ledger.grandTotal);
+
+      renderProducts();
+      if (!document.getElementById('cart-drawer').classList.contains('translate-x-full')) {
+        renderCartDrawer();
+      }
+      if (state.activeTab === 'checkout') {
+        renderDedicatedCheckout();
+      }
+      renderPublicDonationTransparency();
+    }
+
+    // INITIALIZE ON LOAD
+    window.onload = function () {
+      renderCategories();
+      updateDonationImpact(state.selectedDonationPreset);
+      const previewEl = document.getElementById('checkout-donor-preview');
+      if (previewEl) {
+        previewEl.textContent = `Public Ledger Tag: ${formatDonorName(state.checkoutDonorName)} (you)`;
+      }
+      syncAllUI();
+    };
+  </script>
+</body>
+</html>
